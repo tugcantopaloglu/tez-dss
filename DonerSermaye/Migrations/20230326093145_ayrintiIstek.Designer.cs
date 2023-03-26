@@ -11,9 +11,10 @@ using System;
 namespace DonerSermaye.Migrations
 {
     [DbContext(typeof(donersermayeContext))]
-    partial class donersermayeContextModelSnapshot : ModelSnapshot
+    [Migration("20230326093145_ayrintiIstek")]
+    partial class ayrintiIstek
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
