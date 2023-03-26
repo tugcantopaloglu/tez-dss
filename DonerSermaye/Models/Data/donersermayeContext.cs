@@ -39,7 +39,7 @@ namespace DonerSermaye.Models.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-               optionsBuilder.UseSqlServer("Server=MSI;Database=dtbse;Integrated Security=True;", builder =>
+               optionsBuilder.UseSqlServer("Server=2HP-Desktop;Database=test;Integrated Security=True;", builder =>
                 //optionsBuilder.UseSqlServer("Server=DESKTOP-56L7D24\SQLEXPRESS01;User Id=muhuser;password=577mh577;Database=donersermayenew;", builder =>
                 {
                     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
