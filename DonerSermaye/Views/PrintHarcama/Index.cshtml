@@ -1,0 +1,131 @@
+﻿@model DonerSermaye.Models.Data.Istekler
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Rapor";
+    ViewData["Baslik"] = "Rapor";
+    Layout = "~/Views/Shared/Index1.cshtml";
+}<div style="page-break-after:always;">
+    <div class="divheader" style="width: 100%;">
+        <table class="table table-hover table-bordered" style="border:none !important;page-break-before:always;">
+            <tbody>
+                <tr>
+                    <td style="border: none !important; width: 20%">
+                        <img width="80" src="~/images/ege.png" />
+                    </td>
+                    <td style="border: none !important; text-align: center; width: 60%">
+                        <br /><br />
+                        <h5>
+                            EGE ÜNİVERSİTESİ MÜHENDİSLİK FAKÜLTESİ<br />
+                            @ViewBag.bolum<br />
+                            Harcama Talep Yazısı
+                        </h5>
+                    </td>
+                    <td style="border: none !important; width: 20%">
+
+                        <img width="80" style="float:right;margin-right:30px;" src="~/images/muhendislik-fak.png" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px;">
+            <table style="width:95%;">
+                <tr>
+                    <td class="bd">
+                        Talep Edilen Mal ve Hizmetin adı
+                    </td>
+                    <td class="bd">
+                        Miktarı
+                    </td>
+                    <td class="bd">
+                        Yaklaşık Maaliyet Toplamı
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bd">
+                        @Model.Ozet
+                    </td>
+                    <td class="bd">
+                        @Model.IstekAdet
+                    </td>
+                    <td class="bd">
+                        @Model.YaklasikMaliyet
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @{
+        var fir = 1;
+        
+
+    }
+    @if (fir == 1)
+    {
+        <div style="margin-left: 20px; margin-top: 250px; text-align: justify; text-justify: inter-word;">
+            &emsp;&emsp;&emsp;@ViewBag.bolumbaskan Başkanlığında tarihinde toplanılmış olup alınan karar aşağıda bildirilmiştir.
+            <br /><br /><br /><br />
+            &emsp;&emsp;&emsp;KARAR:  tarafından verilen dilekçeye istinaden @Model.Aciklama işi için K.D.V. hariç  TL fiyat belirlenmesi uygun görülmüştür. Konunun Dekanlık Makamına arzına oy birliği ile karar verilmiştir.
+        </div>
+    }
+    else
+    {
+        <div style="margin-left: 20px; margin-top: 250px; text-align: justify; text-justify: inter-word;">
+            &emsp;&emsp;&emsp;@ViewBag.bolumbaskan Başkanlığında tarihinde toplanılmış olup alınan karar aşağıda bildirilmiştir.
+            <br /><br /><br /><br />
+            &emsp;&emsp;&emsp;KARAR: @Model.Aciklama işi için K.D.V. hariç  TL fiyat belirlenmesi uygun görülmüştür. Konunun Dekanlık Makamına arzına oy birliği ile karar verilmiştir.
+        </div>
+    }
+
+
+    <div style=" margin-top: 100px; width: 100%; text-align: center;">
+        <h4>
+            YÖNETİM KURULU ÜYELERİNİN İMZALARI
+        </h4>
+        <h1>
+            ASLI GİBİDİR
+        </h1>
+        <p>
+            @ViewBag.bolumbaskan
+        </p>
+        <p>Bölüm Başkanı</p>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            //window.onafterprint = window.close;
+            window.print();
+        });
+    </script>
+}
+@section Styles
+{
+    <style>
+        @@media screen {
+            div.divheader {
+                display: none;
+            }
+        }
+
+        @@media print {
+            div.divheader {
+                position: fixed;
+                top: 0;
+            }
+        }
+
+        .bd {
+            border: solid;
+            border-collapse: collapse;
+            border-width: 1px;
+            text-align: center;
+        }
+
+        .prices > tr {
+            page-break-before: always;
+        }
+    </style>
+}

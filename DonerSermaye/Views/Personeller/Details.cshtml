@@ -1,0 +1,70 @@
+﻿@model DonerSermaye.Models.Data.Personeller
+
+@{
+    ViewData["Title"] = "Personel Detayı";
+    ViewData["Baslik"] = "Personel Detayı";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+
+<dl class="dl-horizontal">
+    <dt>
+        Tc Kimlik No
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.TcKimlikNo)
+    </dd>
+    <dt>
+        Ad
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Ad)
+    </dd>
+    <dt>
+        Soyad
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Soyad)
+    </dd>
+    <dt>
+        EPosta
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.EPosta)
+    </dd>
+    <dt>
+        Iban
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Iban)
+    </dd>
+    <dt>
+        Şifre
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Sifre)
+    </dd>
+    <dt>
+        Bölüm
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Bolum.Bolum)
+    </dd>
+    <dt>
+        Ünvan
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Unvan.Unvan)
+    </dd>
+    <dt>
+        Yetki
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Yetki.Yetki)
+    </dd>
+</dl>
+<hr />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Düzenle</a> 
+    <a asp-action="Index" class="btn btn-primary">Personel Listesi</a>
+</div>

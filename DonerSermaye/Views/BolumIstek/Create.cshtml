@@ -1,0 +1,36 @@
+﻿@model DonerSermaye.Models.Data.Istekler
+@using DonerSermaye.Models.Helper
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Harcama İstekleri";
+    ViewData["Baslik"] = "Harcama İstekleri";
+    Layout = LayoutHelper.GetPath(@Context.Session.GetString("yetki"));
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Açıklama
+                <input asp-for="Aciklama" class="form-control" />
+                <span asp-validation-for="Ozet" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                İstek Türü
+                <select asp-for="TurNo" class="form-control" asp-items="ViewBag.Tur"></select>
+            </div>
+            <div class="form-group">
+                Yaklaşık Maaliyet
+                <input asp-for="YaklasikMaliyet" class="form-control" />
+                <span asp-validation-for="YaklasikMaliyet" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">İstek Listesi</a>
+            </div>
+        </form>
+    </div>
+</div>

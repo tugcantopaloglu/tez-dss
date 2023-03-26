@@ -1,0 +1,34 @@
+﻿@model DonerSermaye.Models.Data.EkmekTipleri
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h2>Sil</h2>
+
+<h3>Silmek istediğinize emin misiniz?</h3>
+<div>
+    <h4>Ekmek Sipariş</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BirimFiyat)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirimFiyat)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Kdv)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Kdv)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Sil" class="btn btn-default" /> |
+        <a asp-action="Index">Listeye geri dön</a>
+    </form>
+</div>

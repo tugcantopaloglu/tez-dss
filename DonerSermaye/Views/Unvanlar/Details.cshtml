@@ -1,0 +1,25 @@
+﻿@model DonerSermaye.Models.Data.Unvanlar
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Unvanlar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Unvan)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unvan)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Geri Dön</a>
+</div>

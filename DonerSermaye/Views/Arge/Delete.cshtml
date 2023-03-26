@@ -1,0 +1,53 @@
+﻿@model DonerSermaye.Models.Data.Arge
+@{
+    @using Microsoft.AspNetCore.Http
+if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+}
+    @{
+    ViewData["Title"] = "Sil";
+    }
+
+    <h4 class="text-danger"><b>@Html.DisplayFor(model => model.ArgeNo)</b> nolu argeyi silmek istiyor musunuz??</h4>
+    <div>
+
+        <dl class="dl-horizontal">
+            <dt>
+                Arge No:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArgeNo)
+            </dd>
+            <dt>
+                Açıklama:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Aciklama)
+            </dd>
+            <dt>
+                Proje Tutarı:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProjeTutari)
+            </dd>
+        </dl>
+        <hr />
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="x Sil" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-primary"> <i class="ace-icon fa fa-external-link "></i>Arge Listesine Dön</a>
+        </form>
+    </div>

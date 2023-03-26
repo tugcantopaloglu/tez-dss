@@ -1,0 +1,144 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.EkmekSiparisViewModel>
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Toplam Sipariş Raporu";
+    ViewData["Baslik"] = "Toplam Sipariş Raporu";
+    Layout = "~/Views/Shared/Ekmek.cshtml";
+}
+
+@if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+@{
+    var sw = "";
+    @if (ViewData["Filtre"] == "filtre")
+    {
+        sw = "show";
+    }
+    else
+    {
+        <button class="btn btn-warning" style="margin-bottom:10px;" data-toggle="collapse" data-target="#filtre">Filtreleme</button>
+    }
+}
+<div id="filtre" class="collapse @sw">
+    <form action="~/EkmekRaporu" method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Firma</label>
+                    <select name="FirmaId" id="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"> <option value="">Bütün Firmalar</option></select>
+                </div>
+            </div>
+        </div>
+        @{
+            var tBas = "";
+            var tBit = "";
+            if (@ViewBag.BaslamaTarihi == null)
+            {
+                tBas = "";
+            }
+            else
+            {
+                tBas = @Convert.ToDateTime(@ViewBag.BaslamaTarihi).ToString("yyyy-MM-dd");
+            }
+
+            if (@ViewBag.BitisTarihi == null)
+            {
+                tBit = "";
+            }
+            else
+            {
+                tBit = @Convert.ToDateTime(@ViewBag.BitisTarihi).ToString("yyyy-MM-dd");
+            }
+
+        }
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BaslamaTarihi" class="control-label">Fatura Tarihi Başlangıç</label>
+                    <input id="BaslamaTarihi" name="BaslamaTarihi" class="form-control" value="@tBas" type="date" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BitisTarihi" class="control-label">Fatura Tarihi Bitiş</label>
+                    <input id="BitisTarihi" name="BitisTarihi" class="form-control" value="@tBit" type="date" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Listele" />
+                    @if (ViewData["Filtre"] == "filtre")
+                    {
+                        <a asp-action="IsDetay" class="btn btn-danger">Filtreyi Temizle</a>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EkmekTipi)
+            </th>
+            <th style="text-align:right;">
+                @Html.DisplayNameFor(model => model.Adet)
+            </th>
+            <th style="text-align:right;">
+                @Html.DisplayNameFor(model => model.BirimFiyat)
+            </th>
+            <th style="text-align:right;">
+                @Html.DisplayNameFor(model => model.ToplamFiyat)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EkmekTipi)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.Adet)
+                </td>
+                <td style="text-align:right;">
+                    @Convert.ToDouble(item.BirimFiyat).ToString("0.00") TL
+                </td>
+                <td style="text-align:right;">
+                    @Convert.ToDouble(item.ToplamFiyat).ToString("0.00") TL
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">
+                <b>Toplam</b>
+            </td>
+            <td style="text-align:right;">
+                <b>@Convert.ToDouble(Model.Sum(a => a.ToplamFiyat)).ToString("0.00") TL</b>
+            </td>
+        </tr>
+    </tfoot>
+</table>

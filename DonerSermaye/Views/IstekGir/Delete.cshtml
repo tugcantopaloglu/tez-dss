@@ -1,0 +1,40 @@
+﻿@model DonerSermaye.Models.Data.Istekler
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+<h3>Silmek istediğinize emin misiniz?</h3>
+<div><dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ozet)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ozet)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OnayNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OnayNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FaturaTarihi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FaturaTarihi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FaturaNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FaturaNo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IstekNo" />
+        <input type="submit" value="Sil" class="btn btn-danger" /> |
+        <a class="btn btn-success" asp-action="Index">Geri Dön</a>
+    </form>
+</div>

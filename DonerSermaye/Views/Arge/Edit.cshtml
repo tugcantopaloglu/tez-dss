@@ -1,0 +1,78 @@
+﻿@model DonerSermaye.Models.Data.Arge
+@{
+    @using Microsoft.AspNetCore.Http
+if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+}
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PersonelId" />
+            <div class="form-group">
+                <label class="control-label">Arge No</label>
+                <input asp-for="ArgeNo" class="form-control" />
+                <span asp-validation-for="ArgeNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Açıklama</label>
+                <input asp-for="Aciklama" class="form-control" />
+                <span asp-validation-for="Aciklama" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Proje Tutarı</label>
+                <input asp-for="ProjeTutari" class="form-control" />
+                <span asp-validation-for="ProjeTutari" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Başlama Tarihi</label>
+                <input asp-for="Baslama" class="form-control" />
+                <span asp-validation-for="Baslama" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Bitiş Tarihi</label>
+                <input asp-for="Bitis" class="form-control" />
+                <span asp-validation-for="Bitis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Arge Formu</label>
+                <input name="argedosyasi" type="file" accept="application/pdf" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Firma" class="control-label"></label>
+                <select asp-for="FirmaId" class="form-control" asp-items="ViewBag.Firmalar"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-success" />  <a class="btn-primary btn" asp-action="Index"> <i class="ace-icon fa fa-external-link "></i>Arge Listesine Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#FirmaId').select2({ width: '100%' });
+        });
+    </script>
+}

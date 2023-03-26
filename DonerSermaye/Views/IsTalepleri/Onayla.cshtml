@@ -1,0 +1,39 @@
+﻿@model DonerSermaye.Models.Data.IsTalepleri
+
+@{
+    ViewData["Title"] = "İş Talep Onayı";
+    ViewData["Baslik"] = "İş Talep Onayı";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Onayla">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="ToplantiSayisi" class="control-label"></label>
+                <input asp-for="ToplantiSayisi" class="form-control" />
+                <span asp-validation-for="ToplantiSayisi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KararSayisi" class="control-label"></label>
+                <input asp-for="KararSayisi" class="form-control" />
+                <span asp-validation-for="KararSayisi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KararTarihi" class="control-label"></label>
+                <input asp-for="KararTarihi" class="form-control" />
+                <span asp-validation-for="KararTarihi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Onayla" class="btn btn-success" />
+                <a asp-action="IndexB" class="btn btn-info">Talep Listesi</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

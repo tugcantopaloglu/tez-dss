@@ -1,0 +1,54 @@
+﻿@model DonerSermaye.Models.Data.Ayarlar
+
+@{
+    ViewData["Title"] = "Ayarlar";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label class="control-label">BS / BA Limiti</label>
+                <input asp-for="BSBALimiti" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Dekan</label>
+                <input asp-for="Dekan" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Raportör</label>
+                <input asp-for="Raportor" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 1</label>
+                <input asp-for="Uye1" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 2</label>
+                <input asp-for="Uye2" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 3</label>
+                <input asp-for="Uye3" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 4</label>
+                <input asp-for="Uye4" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 5</label>
+                <input asp-for="Uye5" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Üye 6</label>
+                <input asp-for="Uye6" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+

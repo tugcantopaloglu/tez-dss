@@ -1,0 +1,92 @@
+﻿@model DonerSermaye.Models.Data.Isler
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>Isler</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="BolumId" class="control-label"></label>
+                <select asp-for="BolumId" class="form-control" asp-items="ViewBag.BolumId"></select>
+                <span asp-validation-for="BolumId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirmaId" class="control-label"></label>
+                <select asp-for="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"></select>
+                <span asp-validation-for="FirmaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TurId" class="control-label"></label>
+                <select asp-for="TurId" class="form-control" asp-items="ViewBag.TurId"></select>
+                <span asp-validation-for="TurId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tutar" class="control-label"></label>
+                <input asp-for="Tutar" class="form-control" />
+                <span asp-validation-for="Tutar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kdv" class="control-label"></label>
+                <input asp-for="Kdv" class="form-control" />
+                <span asp-validation-for="Kdv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BolumOnay" class="control-label"></label>
+                <input asp-for="BolumOnay" class="form-control" />
+                <span asp-validation-for="BolumOnay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaturaTipi" class="control-label"></label>
+                <select asp-for="FaturaTipi" class="form-control" asp-items="ViewBag.FaturaTipi"></select>
+                <span asp-validation-for="FaturaTipi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaturaTarihi" class="control-label"></label>
+                <input asp-for="FaturaTarihi" class="form-control" />
+                <span asp-validation-for="FaturaTarihi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaturaNo" class="control-label"></label>
+                <input asp-for="FaturaNo" class="form-control" />
+                <span asp-validation-for="FaturaNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Durum" class="control-label"></label>
+                <input asp-for="Durum" class="form-control" />
+                <span asp-validation-for="Durum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HesapId" class="control-label"></label>
+                <select asp-for="HesapId" class="form-control" asp-items="ViewBag.HesapId"></select>
+                <span asp-validation-for="HesapId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dagitim" class="control-label"></label>
+                <input asp-for="Dagitim" class="form-control" />
+                <span asp-validation-for="Dagitim" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lab" class="control-label"></label>
+                <input asp-for="Lab" class="form-control" />
+                <span asp-validation-for="Lab" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Geri Dön</a>
+</div>
+

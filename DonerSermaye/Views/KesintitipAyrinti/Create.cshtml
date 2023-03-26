@@ -1,0 +1,26 @@
+﻿@model DonerSermaye.Models.Data.KesintitipAyrinti
+
+@{
+    ViewData["Title"] = "Kesinti Tipi Ayrıntısı Ekle";
+    ViewData["Baslik"] = "Kesinti Tipi Ayrıntısı Ekle";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+            Kesinti Tipi Ayrıntı Açıklama
+                <input asp-for="Aciklama" class="form-control" />
+                <span asp-validation-for="Aciklama" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-success" />   
+                <a asp-action="Index" class="btn btn-info">Kesinti Tip Ayrıntıları</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
