@@ -1,0 +1,208 @@
+﻿@model DonerSermaye.Models.Data.ViewModel
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "İş Listesi";
+    ViewData["Baslik"] = "İş Listesi";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+@{
+    var sw = "";
+    @if (ViewData["Filtre"] == "filtre")
+    {
+        sw = "show";
+    }
+    else
+    {
+        <button class="btn btn-warning" style="margin-bottom:10px;" data-toggle="collapse" data-target="#filtre">Filtreleme</button>
+    }
+}
+<div id="filtre" class="collapse @sw">
+    <form action="~/IslerListe/Index" method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Bolüm</label>
+                    <select name="BolumId" id="BolumId" class="form-control" asp-items="ViewBag.BolumId"> <option value="">Bütün Bölümler</option></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Firma</label>
+                    <select name="FirmaId" id="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"> <option value="">Bütün Firmalar</option></select>
+                </div>
+            </div>
+        </div>
+        @{
+            var tBas = "";
+            var tBit = "";
+            if (@ViewBag.BaslamaTarihi == null)
+            {
+                tBas = "";
+            }
+            else
+            {
+                tBas = @Convert.ToDateTime(@ViewBag.BaslamaTarihi).ToString("yyyy-MM-dd");
+            }
+
+            if (@ViewBag.BitisTarihi == null)
+            {
+                tBit = "";
+            }
+            else
+            {
+                tBit = @Convert.ToDateTime(@ViewBag.BitisTarihi).ToString("yyyy-MM-dd");
+            }
+
+        }
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BaslamaTarihi" class="control-label">Fatura Tarihi Başlangıç</label>
+                    <input id="BaslamaTarihi" name="BaslamaTarihi" class="form-control" value="@tBas" type="date" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BitisTarihi" class="control-label">Fatura Tarihi Bitiş</label>
+                    <input id="BitisTarihi" name="BitisTarihi" class="form-control" value="@tBit" type="date" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="ButunIsler" class="control-label">Faturası Girilmeyenleri Dahil Et</label>
+                    <input type="checkbox" value="1" name="faturasigirilmeyenlerdahil" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>İş Numarası</label>
+                    <input type="text" id="IsNo" name="IsNo" value="@ViewBag.IsNo" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Listele" />
+                    @if (ViewData["Filtre"] == "filtre")
+                    {
+                        <a asp-action="Index" class="btn btn-danger">Filtreyi Temizle</a>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<table class="table table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>
+                İş Numarası
+            </th>
+            <th>
+                Bölüm
+            </th>
+            <th>
+                Firma Adı
+            </th>
+            <th>
+                Fatura Tarihi
+            </th>
+            <th>
+                Fatura Numarası
+            </th>
+            <th>
+                Toplam Tutar
+            </th>
+            <th>
+                Tür
+            </th>
+
+            <th>
+                Onay Durumu
+            </th>
+            <th>
+                Fakülte Onayı
+            </th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.list)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bolum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirmaAdi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaturaTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaturaNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tutar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tur)
+            </td>
+            @if (item.Bonay == 1)
+            {
+                <td class="btn-success">Onaylandı</td>
+            }
+            else if (item.Bonay == 0)
+            {
+                <td class="btn-warning">Onay Bekleniyor</td>
+            }
+            else if (item.Bonay == -1)
+            {
+                <td class="btn-danger">İade Edildi</td>
+            }
+
+            @if (item.Gonay == 1)
+            {
+                <td class="btn-info">Dağıtıldı</td>
+            }
+            else if (item.FaturaTipi == 1)
+            {
+                <td class="btn-success">Onaylandı</td>
+            }
+            else
+            {
+                <td class="btn-warning">Onay Bekliyor</td>
+            }
+            @{
+                var z = "/faturalar/" + item.IsId + ".pdf";
+            }
+        <td>
+            <a class="btn btn-success btn-xs" asp-action="Edit" asp-route-id="@item.IsId"><i class="ace-icon fa fa-pencil-square-o "></i>Düzenle</a>
+            @if (item.Gonay != 1)
+            {
+                <a class="btn btn-danger btn-xs" asp-action="Delete" asp-route-id="@item.IsId"><i class="ace-icon fa fa-pencil-square-o "></i>Sil</a>
+            }
+
+            <a download href="@z" class="btn btn-xs btn-primary"><i class="fa fa-file"></i>Fatura</a>
+        </td>
+        </tr>
+
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#FirmaId').select2({ width: '100%' });
+            $('#BolumId').select2({ width: '100%' });
+        });
+    </script>
+}

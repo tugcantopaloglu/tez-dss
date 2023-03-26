@@ -1,0 +1,170 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Isler>
+
+@{
+    ViewData["Title"] = "Bölüm Özeti";
+    ViewData["Baslik"] = "Bölüm Özeti";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+<div style="max-width:900px;margin:auto;" class="row text-center">
+    <div class="infobox infobox-blue infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Bölüm İş Sayısı</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bIs</div>
+        </div>
+    </div>
+    <div class="infobox infobox-pink infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Bölüm Toplamı</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bTop TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-green infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Bölüm Dağıtım</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bOdenen TL</div>
+        </div>
+    </div>
+    <!-- bölümlere gelir gösterilmesi kapatıldı
+    <div class="infobox infobox-orange infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Geçmiş Yıl Devir</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bGecmisyil TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-red infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:10px"> Bölüm Geliri</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bGelir TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-grey infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:10px"> Bölüm Gideri</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bGider TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-purple infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:10px"> Bölüm Kalan</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.bKalan TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-brown infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:10px"> Lab Kalan</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.LabTutar TL</div>
+        </div>
+    </div>
+        -->
+</div>
+ <div class="space-4"></div>
+
+<table class="table table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>
+                İş / Firma
+            </th>
+            <th>
+                İş Türü
+            </th>
+            <th>
+                Tutar
+            </th>
+            <th>
+                Onay Durumu
+            </th>
+            <th>
+                Ödeme Onayı
+            </th>
+            <th>
+                İşlemler
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tur.Tur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tutar)
+            </td>
+
+            @if (item.BolumOnay == 0)
+            {
+                <td class="btn-warning">
+                    ONAY BEKLİYOR
+                </td>
+            }
+            else if (item.BolumOnay == 1)
+            {
+                <td class="btn-success">
+                    ONAYLANDI
+                </td>
+            }
+            else if (item.BolumOnay == -1)
+            {
+                <td class="btn-danger">
+                    İADE EDİLDİ
+                </td>
+            }
+
+            @if (item.FaturaTipi == 2)
+            {
+                <td class="btn-warning">
+                    ÖDEME BEKLİYOR
+                </td>
+            }
+            else if (item.Dagitim == 0 || item.Dagitim == null)
+            {
+                <td class="btn-warning">
+                    DAĞITIM BEKLİYOR
+                </td>
+            }
+            else if (item.Dagitim == 1)
+            {
+                <td class="btn-success">
+                    DAĞITIM YAPILDI
+                </td>
+            }
+            <td>
+                <a class="btn btn-xs btn-success" href="~/print/index?IsId=@item.Id" target="_blank">Yazdır</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

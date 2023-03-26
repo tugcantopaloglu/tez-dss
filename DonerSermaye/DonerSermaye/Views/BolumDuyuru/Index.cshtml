@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Duyurular>
+
+@{
+    ViewData["Title"] = "Duyurular";
+    ViewData["Baslik"] = "Duyurular";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+<table class="table table-bordered table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Duyuru Başlığı
+            </th>
+            <th>
+                Duyuru
+            </th>
+            <th>
+                Tarih
+            </th>
+            <th>
+                Gönderen
+            </th>
+        
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DuyuruNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Baslik)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duyuru)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tarih)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GonderenNavigation.Ad)  @Html.DisplayFor(modelItem => item.GonderenNavigation.Soyad)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

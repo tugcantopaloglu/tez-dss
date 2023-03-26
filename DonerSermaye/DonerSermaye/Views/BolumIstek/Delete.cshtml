@@ -1,0 +1,17 @@
+﻿@model DonerSermaye.Models.Data.Istekler
+
+@{
+    ViewData["Title"] = "İstek Sil";
+    ViewData["Baslik"] = "İstek Sil";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+
+<h3 class="alert alert-danger">  @Html.DisplayFor(model => model.Konu) adlı isteği silmek istiyor musunuz?</h3>
+<div>
+  <form asp-action="Delete">
+        <input type="hidden" asp-for="IstekNo" />
+        <input type="submit" value="Sil" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-info">İstek Listesi</a>
+    </form>
+</div>

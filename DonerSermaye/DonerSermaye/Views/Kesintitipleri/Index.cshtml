@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Kesintitipleri>
+
+@{
+    ViewData["Title"] = "Kesinti Tipleri";
+    ViewData["Baslik"] = "Kesinti Tipleri";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-sm btn-primary">Kesinti Tipi Ekle</a>
+</p>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Kesinti Tipi
+            </th>
+            <th>
+                Kesinti Tip Ayrıntısı
+            </th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KesintiTipi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.kesintiTipAyrinti.Aciklama)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Düzenle</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,441 @@
+﻿@model List<DonerSermaye.Models.Data.IsAyrintiViewModel>
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Rapor";
+    ViewData["Baslik"] = "Rapor";
+    Layout = "~/Views/Shared/doner.cshtml";
+}<div style="page-break-after:always;">
+    <div class="divheader" style="width: 100%;">
+        <table class="table table-hover table-bordered" style="border:none !important;page-break-before:always;">
+            <tbody>
+                <tr>
+                    <td style="border: none !important; width: 20%">
+                        <img width="80" src="~/images/ege.png" />
+                    </td>
+                    <td style="border: none !important; text-align: center; width: 60%">
+                        <br /><br />
+                        <h5>
+                            EGE ÜNİVERSİTESİ MÜHENDİSLİK FAKÜLTESİ<br />
+                            FAKÜLTE YÖNETİM KURULU
+                        </h5>
+                    </td>
+                    <td style="border: none !important; width: 20%">
+
+                        <img width="80" style="float:right;margin-right:30px;" src="~/images/muhendislik-fak.png" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px;">
+            <table style="width:95%;">
+                <tr>
+                    <td class="bd">
+                        Toplantı Tarihi
+                    </td>
+                    <td class="bd">
+                        Toplantı Sayısı
+                    </td>
+                    <td class="bd">
+                        Karar Sayısı
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bd">
+                        @Convert.ToDateTime(ViewData["ToplantiTarihi"]).ToString("dd.MM.yyyy")
+                    </td>
+                    <td class="bd">
+                        @ViewData["ToplantiSayisi"]
+                    </td>
+                    <td class="bd">
+                        @ViewData["KararSayisi"]
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @if (ViewData["Arge"] == "1")
+    {
+        <div style="margin-left: 20px; margin-top: 170px; text-align: justify; text-justify: inter-word;">&emsp;&emsp;&emsp;Yükseköğretim Kurumlarında Döner Sermaye Gelirlerinden yapılacak ek ödemenin dağıtılmasında uygulanacak usul ve esaslara ilişkin 18 Şubat 2011 tarihli ve 2785 (Asıl) sayı ile yayımlanan yönetmelik hükümleri gereğince, fakültemiz bölümlerinde görevli öğretim üyelerinin @ViewData["HesapAdi"] döneminde gerçekleştirdiği Üniversite Ar-Ge Değerlendirme Kurulu’nda kabul edilen aşağıda  numaraları bulunan Ar-Ge çalışmalarından @ViewData["bruttoplam"] TL gelir elde edilmiş olup, yasal kesintiler ayrıldıktan sonra kalan @string.Format("{0:C}", ViewData["NetToplam"]) TL'nin 2547 sayılı kanunun 58.maddesi k.bendi uyarınca ödenmesinin E.Ü. Döner Sermaye Yürütme Kuruluna arzına oy birliği ile karar verildi.</div>
+    }
+    else
+    {
+
+        <div style="margin-left: 20px; margin-top: 170px; text-align: justify; text-justify: inter-word;">&emsp;&emsp;&emsp;Yükseköğretim Kurumlarında Döner Sermaye Gelirlerinden yapılacak ek ödemenin dağıtılmasında Uygulanacak Usul ve Esaslara ilişkin 18 Şubat 2011 tarihli ve 2785 (Asıl) sayı ile yayımlanan yönetmelik Hükümleri gereğince, Bölümlerimizde @ViewData["HesapAdi"] döneminde mesai saatleri içerisinde ve mesai saatleri dışında yapılan çalışmalardan @ViewData["bruttoplam"] TL gelir elde edilmiş olup, yasal kesintiler olan %1 Maliye Hissesi, %5 Bilimsel Araştırma Projeleri payı, Kurum imkanları kullanılmayan hizmetlerden %20 ve Kurum imkanları kullanılan hizmetlerden %35 malzeme gideri ayrıldıktan sonra kalan @string.Format("{0:C}", ViewData["NetToplam"]) TL'nin ödenmesinin E.Ü. Döner Sermaye Yürütme Kuruluna arzına oy birliği ile karar verildi.</div>
+
+    }
+
+    @{
+        decimal? ttz = 0;
+        int pbr = 0;
+    }
+
+    @for (int i = 1; i <= (Model.Count / 26) + 1; i++)
+    {
+        string marg = "10mm";
+        if (i > 1)
+        {
+            marg = "50mm";
+        }
+        <p style="visibility:hidden;">dede</p>
+        <div style="margin-top: @marg;width:100%;">
+            <table style="width:100%;" class="table table-hover table-bordered prices">
+                <thead>
+                    <tr>
+                        <th style="padding: 2px;">Ünvanı</th>
+                        <th style="padding: 2px;">
+                            Adı Soyadı
+                        </th>
+                        @if (ViewData["Arge"] == "1")
+                        {
+                            <th style="padding: 2px;">AR-GE Numarası</th>
+                        }
+                        <th style="padding: 2px; text-align: right; ">
+                            Brüt Tutar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int j = 26 * (i - 1); j < Math.Min(26, Model.Count - 26 * (i - 1)) + (i - 1) * 26; j++)
+                    {
+                        ttz = ttz + Model[j].Tutar;
+                        <tr>
+                            <td style="font-size: 10px; padding: 2px;">
+                                @Model[j].Unvan
+                            </td>
+                            <td style="font-size: 10px; padding: 2px;">
+                                @Model[j].AdSoyad
+                            </td>
+                            @if (ViewData["Arge"] == "1")
+                            {
+                                int tz = 0;
+                                if (Model[j].Aciklama != null)
+                                {
+                                    tz = Model[j].Aciklama.IndexOf("DS-");
+                                }
+
+                                string argeno = "";
+
+                                if (tz == null)
+                                {
+                                    tz = 0;
+                                }
+                                if (Model[j].Aciklama != null)
+                                {
+                                    argeno = Model[j].Aciklama.Substring(tz);
+                                }
+
+                                <td style="font-size: 10px; padding: 2px;">@argeno</td>
+                            }
+                            <td style="font-size: 10px; padding: 2px; text-align: right; ">@Model[j].Tutar.Value.ToString("0.00") TL</td>
+                        </tr>
+
+                    }
+
+
+                </tbody>
+                <tfoot>
+                    <tr>
+
+                        @if (ViewData["Arge"] == "1")
+                        {
+                            <td colspan="3" style="padding: 2px;">
+                                <strong>Toplam</strong>
+                            </td>
+                        }
+                        else
+                        {
+
+                            <td colspan="2" style="padding: 2px;">
+                                <strong>Toplam</strong>
+                            </td>
+                        }
+                        <td style="padding: 2px; text-align: right; ">
+                            <strong>@Convert.ToDecimal(Model.Sum(a => a.Tutar)).ToString("0.00") TL</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    <div style="width:100%;text-align:center;">
+        <h4>
+            YÖNETİM KURULU ÜYELERİNİN İMZALARI
+        </h4>
+        <h1>
+            ASLI GİBİDİR
+        </h1>
+        <p>
+            @ViewData["k8"]
+        </p>
+        <p>Fakülte Sekreteri</p>
+    </div>
+</div>
+ <div style="page-break-after:always;">
+     <div class="divheader" style="width: 100%;">
+         <table class="table table-hover table-bordered" style="border:none !important;page-break-before:always;">
+             <tbody>
+                 <tr>
+                     <td style="border: none !important; width: 20%">
+                         <img width="80" src="~/images/ege.png" />
+                     </td>
+                     <td style="border: none !important; text-align: center; width: 60%">
+                         <br /><br />
+                         <h5>
+                             EGE ÜNİVERSİTESİ MÜHENDİSLİK FAKÜLTESİ<br />
+                             FAKÜLTE YÖNETİM KURULU
+                         </h5>
+                     </td>
+                     <td style="border: none !important; width: 20%">
+
+                         <img width="80" style="float:right;margin-right:30px;" src="~/images/muhendislik-fak.png" />
+                     </td>
+                 </tr>
+             </tbody>
+         </table>
+
+         <div style="margin-top:10px;">
+             <table style="width:95%;">
+                 <tr>
+                     <td class="bd">
+                         Toplantı Tarihi
+                     </td>
+                     <td class="bd">
+                         Toplantı Sayısı
+                     </td>
+                     <td class="bd">
+                         Karar Sayısı
+                     </td>
+                 </tr>
+                 <tr>
+                     <td class="bd">
+                         @Convert.ToDateTime(ViewData["ToplantiTarihi"]).ToString("dd.MM.yyyy")
+                     </td>
+                     <td class="bd">
+                         @ViewData["ToplantiSayisi"]
+                     </td>
+                     <td class="bd">
+                         @ViewData["KararSayisi"]
+                     </td>
+                 </tr>
+             </table>
+         </div>
+     </div>
+     @if (ViewData["Arge"] == "1")
+     {
+         <div style="margin-left: 20px; margin-top: 250px; text-align: justify; text-justify: inter-word;">&emsp;&emsp;&emsp;Yükseköğretim Kurumlarında Döner Sermaye Gelirlerinden yapılacak ek ödemenin dağıtılmasında uygulanacak usul ve esaslara ilişkin 18 Şubat 2011 tarihli ve 2785 (Asıl) sayı ile yayımlanan yönetmelik hükümleri gereğince, fakültemiz bölümlerinde görevli öğretim üyelerinin @ViewData["HesapAdi"] döneminde gerçekleştirdiği Üniversite Ar-Ge Değerlendirme Kurulu’nda kabul edilen aşağıda  numaraları bulunan Ar-Ge çalışmalarından @ViewData["bruttoplam"] TL gelir elde edilmiş olup, yasal kesintiler ayrıldıktan sonra kalan @string.Format("{0:C}", ViewData["NetToplam"]) TL'nin 2547 sayılı kanunun 58.maddesi k.bendi uyarınca ödenmesinin E.Ü. Döner Sermaye Yürütme Kuruluna arzına oy birliği ile karar verildi.</div>
+     }
+     else
+     {
+
+         <div style="margin-left: 20px; margin-top: 250px; text-align: justify; text-justify: inter-word;">&emsp;&emsp;&emsp;Yükseköğretim Kurumlarında Döner Sermaye Gelirlerinden yapılacak ek ödemenin dağıtılmasında Uygulanacak Usul ve Esaslara ilişkin 18 Şubat 2011 tarihli ve 2785 (Asıl) sayı ile yayımlanan yönetmelik Hükümleri gereğince, Bölümlerimizde @ViewData["HesapAdi"] döneminde mesai saatleri içerisinde ve mesai saatleri dışında yapılan çalışmalardan @ViewData["bruttoplam"] TL gelir elde edilmiş olup, yasal kesintiler olan %1 Maliye Hissesi, %5 Bilimsel Araştırma Projeleri payı, Kurum imkanları kullanılmayan hizmetlerden %15 ve Kurum imkanları kullanılan hizmetlerden %30 malzeme gideri ayrıldıktan sonra kalan @string.Format("{0:C}", ViewData["NetToplam"]) TL'nin ödenmesinin E.Ü. Döner Sermaye Yürütme Kuruluna arzına oy birliği ile karar verildi.</div>
+
+     }
+     @{
+         ttz = 0;
+         pbr = 0;
+     }    @for (int i = 1; i <= (Model.Count / 26) + 1; i++)
+     {
+         string marg = "5mm";
+         if (i > 1)
+         {
+             marg = "50mm";
+         }
+         <p style="visibility:hidden;">dede</p>
+         <div style="margin-top: @marg;width:100%;">
+             <table style="width:100%;" class="table table-hover table-bordered prices">
+                 <thead>
+                     <tr>
+                         <th style="padding: 2px;">Ünvanı</th>
+                         <th style="padding: 2px;">
+                             Adı Soyadı
+                         </th>
+                         @if (ViewData["Arge"] == "1")
+                         {
+                             <th style="padding: 2px;">AR-GE Numarası</th>
+                         }
+                         <th style="text-align:right; padding: 2px;">
+                             Brüt Tutar
+                         </th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     @for (int j = 26 * (i - 1); j < Math.Min(26, Model.Count - 26 * (i - 1)) + (i - 1) * 26; j++)
+                     {
+                         ttz = ttz + Model[j].Tutar;
+                         <tr>
+                             <td style="font-size: 10px; padding: 2px;">
+                                 @Model[j].Unvan
+                             </td>
+                             <td style="font-size: 10px; padding: 2px;">
+                                 @Model[j].AdSoyad
+                             </td>
+                             @if (ViewData["Arge"] == "1")
+                             {
+                                 int tz = 0;
+                                 if (Model[j].Aciklama != null)
+                                 {
+                                     tz = Model[j].Aciklama.IndexOf("DS-");
+                                 }
+
+                                 string argeno = "";
+
+                                 if (tz == null)
+                                 {
+                                     tz = 0;
+                                 }
+                                 else if (Model[j].Aciklama != null && tz > 0)
+                                 {
+                                     argeno = Model[j].Aciklama.Substring(tz);
+                                 }
+
+                                 <td style="font-size: 10px; padding: 2px;">@argeno</td>
+                             }
+                             <td style="font-size: 10px; padding: 2px; text-align: right;">@Model[j].Tutar.Value.ToString("0.00") TL</td>
+                         </tr>
+
+                     }
+
+                 </tbody>
+                 <tfoot>
+                     <tr>
+
+                         @if (ViewData["Arge"] == "1")
+                         {
+                             <td colspan="3" style="padding: 2px;">
+                                 <strong>Toplam</strong>
+                             </td>
+                         }
+                         else
+                         {
+
+                             <td colspan="2" style="padding: 2px;">
+                                 <strong>Toplam</strong>
+                             </td>
+                         }
+                     <td style="padding: 2px; text-align: right; ">
+                         <strong>@Convert.ToDecimal(Model.Sum(a => a.Tutar)).ToString("0.00") TL</strong>
+                     </td>
+                     </tr>
+                 </tfoot>
+             </table>
+         </div>
+     }
+     </div>
+<div style="page-break-after:always;">
+    <div class="divheader" style="width: 100%;">
+        <table class="table table-hover table-bordered" style="border:none !important;page-break-before:always;">
+            <tbody>
+                <tr>
+                    <td style="border: none !important; width: 20%">
+                        <img width="80" src="~/images/ege.png" />
+                    </td>
+                    <td style="border: none !important; text-align: center; width: 60%">
+                        <br /><br />
+                        <h5>
+                            EGE ÜNİVERSİTESİ MÜHENDİSLİK FAKÜLTESİ<br />
+                            FAKÜLTE YÖNETİM KURULU
+                        </h5>
+                    </td>
+                    <td style="border: none !important; width: 20%">
+
+                        <img width="80" style="float:right;margin-right:30px;" src="~/images/muhendislik-fak.png" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px;">
+            <table style="width:95%;">
+                <tr>
+                    <td class="bd">
+                        Toplantı Tarihi
+                    </td>
+                    <td class="bd">
+                        Toplantı Sayısı
+                    </td>
+                    <td class="bd">
+                        Karar Sayısı
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bd">
+                        @Convert.ToDateTime(ViewData["ToplantiTarihi"]).ToString("dd.MM.yyyy")
+                    </td>
+                    <td class="bd">
+                        @ViewData["ToplantiSayisi"]
+                    </td>
+                    <td class="bd">
+                        @ViewData["KararSayisi"]
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="margin-left: 20px; margin-top: 300px; text-align: justify; text-justify: inter-word; text-align:center;">
+
+        <div style="width:100%;text-align:center;">
+            <h4>
+                YÖNETİM KURULU ÜYELERİNİN İMZALARI
+            </h4>
+        </div>
+        <table class="table table-bordered" style="width:100%;">
+            <tr>
+                <td colspan="2" style="height:60px;border:thin;border-collapse:collapse;">@ViewData["k1"]<br />Dekan</td>
+            </tr>
+            <tr>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k2"]</td>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k3"]</td>
+            </tr>
+            <tr>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k4"]</td>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k5"]</td>
+            </tr>
+            <tr>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k6"]</td>
+                <td style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k7"]</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="height: 60px; border: thin; border-collapse: collapse;">@ViewData["k8"]<br />Fakülte Sekreteri<br />(RAPORTÖR)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            //window.onafterprint = window.close;
+            window.print();
+        });
+    </script>
+}
+@section Styles
+{
+    <style>
+        @@media screen {
+            div.divheader {
+                display: none;
+            }
+        }
+
+        @@media print {
+            div.divheader {
+                position: fixed;
+                top: 0;
+            }
+        }
+
+        .bd {
+            border: solid;
+            border-collapse: collapse;
+            border-width: 1px;
+            text-align: center;
+        }
+
+        .prices > tr {
+            page-break-before: always;
+        }
+    </style>
+}

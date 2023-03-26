@@ -1,0 +1,125 @@
+﻿
+@model DonerSermaye.Models.Data.Isler
+
+@{@using Microsoft.AspNetCore.Http
+if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+}
+@{
+    ViewData["Title"] = "İş Ekle";
+    ViewData["Baslik"] = "İş Ekle";
+}
+<body onload="personelgetir2()">
+    <div class="col-md-12" id="frm">
+        <form data-ajax="true"
+              data-ajax-begin="onBegin"
+              data-ajax-complete="onSuccess"
+              data-ajax-update="#dagitim form"
+              asp-action="Kaydet" asp-controller="Isler">
+
+            <div id="dagitim2">
+                <div class="row">
+                    <br />
+                    <input id="maxdtutar" type="hidden" value="@ViewBag.LabTutar" />
+                    <div class="alert alert-info col-md-8">Dağıtılacak Tutar: <input id="dtutar" type="number" value="@ViewBag.LabTutar" /> TL</div>
+                    <div class="alert alert-danger col-md-3">Kalan Tutar: <span id="kalantutar">0</span> TL</div>
+                </div>
+                <div class="row">
+                    <div id="kisidagitim">
+                        <div class="form-group col-md-3">
+                            <span>Bölüm</span>
+                            <select asp-for="Id" class="form-control" asp-items="ViewBag.DigerBolumId" onchange="personelgetir(this)" onload="personelgetir2('1')"></select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <span>Personel</span>
+                            <select class="form-control" id="personel" name="personel"></select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <span>Ücret</span>
+                            <input class="form-control" type="text" id="miktar" onkeyup="degistir()" />
+                        </div>
+                        <div id="dpersonel" class="col-md-4">
+                            <table class="table table-hover"></table>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <a class="btn btn-info btn-block text-center" id="ekle">EKLE</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <a class="col-md-7 btn btn-info text-center">
+                                TOPLAM
+                            </a>
+                            <a class="col-md-3 btn btn-danger text-right" id="topla">
+                                0
+                            </a>
+                            <a class="col-md-1 btn btn-danger text-left" id="tl">
+                                TL
+                            </a>
+                        </div>
+                        <input type="button" value="Kaydet" class="btn btn-primary btn-block ekle" disabled id="kaydet2" />
+                    </div>
+                </div>
+
+            </div>
+            <p></p>
+            <div class="alert alert-danger" id="aciklama" style="display:none">
+                <ul>
+                    <li>Dağıtılacak Paranın belli bir kısmını bölüme aktarmak isterseniz önce bölümünüzü seçip ardından kişiler listesinden <b class="text-primary">Bölüm Payı</b>nı seçiniz...</li>
+                    <li>Dağıtımı kaydedebilmek için dağıtılacak para ile dağıtılan paranın eşit olması gerekir. Aksi taktirde <b class="text-success"> kaydet butonu aktif olmayacaktır.</b></li>
+                    <li>Dağıtım işlemi sonra bölüm içinde eşit dağıtılacaksa Bölümünüzü seçip kişi listesinden <b class="text-warning"> Labaratuarı</b> seçiniz...</li>
+                </ul>
+            </div>
+
+
+
+        </form>
+    </div>
+
+
+
+</body>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        $('#FirmaId').select2();
+        var id = $("#FirmaId").val();
+        $.ajax({
+            url: '/Isler/FirmaGetir?id=' + id,
+            type: 'POST',
+            success: function (data) {
+                $("#firmaadi").html('Seçilen Firma: ' + data);
+                $("#firmaadi").css('display', 'block');
+            }
+        });
+        $("#FirmaId").change(function () {           
+            $("select option:selected").each(function () {
+                var id = $("#FirmaId").val();
+                $.ajax({
+                    url: '/Isler/FirmaGetir?id=' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        $("#firmaadi").html('Seçilen Firma: '+data);
+                        $("#firmaadi").css('display', 'block');
+                    }
+                });
+            });
+        });
+    });
+</script>
+    
+}

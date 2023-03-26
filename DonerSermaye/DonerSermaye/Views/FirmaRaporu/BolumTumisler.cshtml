@@ -1,0 +1,191 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.MyModel2>
+
+@{
+    ViewData["Title"] = "İş Detay Raporları";
+    ViewData["Baslik"] = "İş Detay Raporları";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+@{
+var sw = "";
+    @if(ViewData["Filtre"] == "filtre")
+{
+sw = "show";
+}
+else
+{
+<button class="btn btn-warning" style="margin-bottom:10px;" data-toggle="collapse" data-target="#filtre">Filtreleme</button>
+}
+}
+<div id="filtre" class="collapse @sw">
+    <form action="~/FirmaRaporu/BolumTumisler" method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Firma</label>
+                    <select name="FirmaId" id="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"> <option value="">Bütün Firmalar</option></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>İş Türü</label>
+                    <select name="IsTuru" id="IsTuru" class="form-control" asp-items="ViewBag.IsTurleri"> <option value="">İş Türü</option></select>
+                </div>
+            </div>
+        </div>
+        @{
+    var tBas = "";
+    var tBit = "";
+    if(@ViewBag.BaslamaTarihi == null)
+    {
+        tBas = "";
+    }
+    else
+    {
+        tBas = @Convert.ToDateTime(@ViewBag.BaslamaTarihi).ToString("yyyy-MM-dd");
+    }
+
+    if(@ViewBag.BitisTarihi == null)
+    {
+        tBit = "";
+    }
+    else
+    {
+        tBit = @Convert.ToDateTime(@ViewBag.BitisTarihi).ToString("yyyy-MM-dd");
+    }
+
+        }
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BaslamaTarihi" class="control-label">Fatura Tarihi Başlangıç</label>
+                    <input id="BaslamaTarihi" name="BaslamaTarihi" class="form-control" value="@tBas" type="date" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="BitisTarihi" class="control-label">Fatura Tarihi Bitiş</label>
+                    <input id="BitisTarihi" name="BitisTarihi" class="form-control" value="@tBit" type="date" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>İş Numarası</label>
+                    <input type="text" id="IsNo" name="IsNo" value="@ViewBag.IsNo" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Listele" />
+                    @if(ViewData["Filtre"] == "filtre")
+                    {
+                        <a asp-action="IsDetay" class="btn btn-danger">Filtreyi Temizle</a>
+                    }
+                </div>
+                
+            </div>
+
+        </div>
+    </form>
+</div>
+<div id="IcerikAlani">
+    <table class="table table-bordered table-hover table-condensed" border="1" style="border-collapse:collapse">
+        <thead>
+            <tr>
+                <th>
+                    İş Numarası
+                </th>
+                <th>
+                    İş Türü
+                </th>
+                <th>
+                    Açıklama
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirmaAdi)
+                </th>
+                <th style="text-align: right;">
+                    @Html.DisplayNameFor(model => model.Tutar)
+                </th>
+                <!--bölümlere gelir gösterilmesi kapatıldı
+    <th style="text-align: right;">
+        Bölüm Payı
+    </th>
+        -->
+                <th>
+                    @Html.DisplayNameFor(model => model.FaturaTarihi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaturaNo)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+               var z = "../faturalar/" + item.Id + ".pdf";
+                
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aciklama)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirmaAdi)
+                </td>
+                <td style="text-align: right;">
+                    @Html.DisplayFor(modelItem => item.Tutar) TL
+                </td>
+                <!--bölümlere gelir gösterilmesi kapatıldı
+    <td style="text-align: right;">
+        @Html.DisplayFor(modelItem => item.KesintiToplami) TL
+    </td>-->
+                <td>
+                    @Html.DisplayFor(modelItem => item.FaturaTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FaturaNo)
+                </td>
+                <td>
+                    @if (item.faturayuklendimi)
+                    {
+                        <a download href="@z" class="btn btn-xs btn-primary"><i class="fa fa-file"></i>Fatura</a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td>Toplam</td>
+                <td style="text-align:right;">@Model.Select(a => a.Tutar).Sum().ToString("0.00") TL</td>
+                <!--bölümlere gelir gösterilmesi kapatıldı
+                    <td style="text-align:right;">@Convert.ToDecimal(Model.Select(a => a.KesintiToplami).Sum()).ToString("0.00") TL</td>
+                    -->
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="text-right">
+        <a href="javascript:CallPrint('IcerikAlani','@ViewData["Baslik"]')" class="btn btn-warning">Yazdır</a>
+    </div>
+
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#FirmaId').select2({ width: '100%' });
+                $('#BolumId').select2({ width: '100%' });
+            });
+        </script>
+    }

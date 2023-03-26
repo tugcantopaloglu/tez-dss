@@ -1,0 +1,610 @@
+﻿
+@using Microsoft.AspNetCore.Http
+
+
+@if (@Context.Session.GetString("yetki") == "3")
+{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] </title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/tema/assets/js/jquery-2.1.4.min.js"></script>
+    <script src="~/tema/assets/js/ace-extra.min.js"></script>
+    <script src="~/tema/assets/js/genel.js"></script>
+    <script src="~/select2/js/select2.js"></script>
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/tema/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/tema/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/tema/assets/css/fonts.googleapis.com.css" />
+    <link rel="stylesheet" href="~/tema/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" href="~/tema/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/tema/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/select2/css/select2.css" />
+    <style>
+        @@media print {
+            .dontprint {
+                display: none;
+            }
+
+            table.table-bordered {
+                border: 1px solid black !important;
+            }
+
+                table.table-bordered > thead > tr > th {
+                    border: 1px solid black !important;
+                }
+
+                table.table-bordered > tbody > tr > td {
+                    border: 1px solid black !important;
+                }
+        }
+    </style>
+</head>
+
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default  ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="navbar-header pull-left">
+                <a href="Ozet" class="navbar-brand">
+                    <small>
+                        <i class="ace-icon fa fa-cogs"></i>
+                        Mühendislik Fakültesi Döner Sermaye Otomasyonu
+                    </small>
+                </a>
+            </div>
+
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <span>
+                                @Context.Session.GetString("kisi")
+                                @if (@Context.Session.GetString("yetki") == "1")
+                                    {
+                                        Write("- Bölüm Başkanı");
+                                    }
+                                    else if (@Context.Session.GetString("yetki") == "2")
+                                    {
+                                        Write("- Öğretim Görevlisi");
+                                    }
+                                    else if(@Context.Session.GetString("yetki") == "3")
+                                                                        {
+                                        Write("- Döner Sermaye Personeli");
+                                    }
+                            </span>
+                        </a>
+
+
+                    </li>
+                </ul>
+            </div>
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.loadState('main-container') } catch (e) { }
+        </script>
+
+        <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+            <script type="text/javascript">
+                try { ace.settings.loadState('sidebar') } catch (e) { }
+            </script>
+            <ul class="nav nav-list">
+                <li class="">
+                    <a href="/Ozet">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> Özet Bilgiler </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Odeme">
+                        <i class="menu-icon fa fa-check"></i>
+                        <span class="menu-text">
+                            Fatura Girişi
+                        </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Dagitim">
+                        <i class="menu-icon fa fa-credit-card"></i>
+                        <span class="menu-text">
+                            Dağıtım
+                        </span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/Hesaplar">
+                        <i class="menu-icon fa fa-undo"></i>
+                        <span class="menu-text"> Dağıtım Geçmişi </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/ArgeDagitim">
+                        <i class="menu-icon fa fa-credit-card"></i>
+                        <span class="menu-text">
+                            Arge Dağıtım
+                        </span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/ArgeHesaplar">
+                        <i class="menu-icon fa fa-undo"></i>
+                        <span class="menu-text"> Arge Dağıtım Geçmişi </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/OdemeBekleyen">
+                        <i class="menu-icon fa fa-credit-card"></i>
+                        <span class="menu-text">
+                            Ödeme Bekleyen İşler
+                        </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/IslerListe">
+                        <i class="menu-icon fa fa-check"></i>
+                        <span class="menu-text">
+                            İş Kontrol Listesi
+                        </span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/IsTalepleri/IndexC">
+                        <i class="menu-icon fa fa-bullhorn"></i>
+                        <span class="menu-text"> İş Türü Talepleri </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            Harcama İşlemleri
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="/IstekOnay">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Harcama Onayı
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="/IstekGir/CreateB">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Dekanlık Harcama Girişi
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="/IstekGir">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Bölüm Harcama Girişi
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="/Personeller">
+                        <i class="menu-icon fa fa-users"></i>
+                        <span class="menu-text">Personel İşlemleri</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Firmalar">
+                        <i class="menu-icon fa fa-desktop"></i>
+                        <span class="menu-text"> Firma İşlemleri </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Duyurular">
+                        <i class="menu-icon fa fa-bullhorn"></i>
+                        <span class="menu-text"> Duyuru İşlemleri </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Arge/Index2">
+                        <i class="menu-icon fa fa-bullhorn"></i>
+                        <span class="menu-text"> Arge Takibi </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            Raporlar
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/DagitimRaporu/Dekanlik">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Dağıtım Raporu
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                    <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/GenelDurumRaporu">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Genel Rapor
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul><ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/KesintiRapor">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Kesinti Raporu
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul> <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/DekanlikRaporlar/IsDetayKisi">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                İş Kişi Detay Raporu
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                    <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/DekanlikRaporlar/IsDetay">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                İş Detay Raporu
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            İstatistikler
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/DekanlikIstatistik">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Genel İstatistikler
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/DekanlikRaporlar/dskatki">
+                                <i class="menu-icon fa fa-users"></i>
+                                Katkı İstatistikleri
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            Ekmek
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+
+
+
+                        <li class="">
+                            <a href="/EkmekSiparis">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Ekmek Sipariş Raporu
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/EkmekRaporu">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Ekmek Genel Rapor
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/EkmekGelir">
+                                <i class="menu-icon fa fa-users"></i>
+                                Ekmek Satış Raporu
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            Ayarlar
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+
+                        <li class="">
+                            <a href="/Ayarlar/Edit">
+                                <i class="menu-icon fa fa-building"></i>
+                                Genel Ayarlar
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="/Bolumler">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Bölüm İşlemleri
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="/Unvanlar">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Ünvan İşlemleri
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/IsTurleri">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                İş Türleri İşlemleri
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/IstekTurleri">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                İstek Türleri
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/EkmekTipleris">
+                                <i class="menu-icon fa fa-undo"></i>
+                                <span class="menu-text"> Ekmek Tipleri </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+
+                        <span class="menu-text">
+                            Kesinti İşlemleri
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+
+                        <li class="">
+                            <a href="/KesintitipAyrinti">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Kesinti Tipi Ayrıntı Tanımlama
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/Kesintitipleri">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Kesinti Tipleri
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="/Kesintioran">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Kesinti Oranları
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="/BSBA">
+                        <i class="menu-icon fa fa-money"></i>
+                        BS/BA Listesi
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Cikis">
+                        <i class="menu-icon fa fa-power-off"></i>
+                        Çıkış Yap
+                    </a>
+                </li>
+            </ul><!-- /.nav-list -->
+
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="main-content-inner">
+
+
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1>
+                            @ViewData["Baslik"]
+                            <small>
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+
+                            </small>
+                        </h1>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @RenderBody()
+                            <!-- PAGE CONTENT BEGINS -->
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="dontprint footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">Ege Üniversitesi</span>
+                        Mühendislik Fakültesi - 2021
+                    </span>
+
+                </div>
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='~/tema/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="~/tema/assets/js/bootstrap.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <!-- ace
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script> scripts -->
+
+    <script src="~/tema/assets/js/ace-elements.min.js"></script>
+    <script src="~/tema/assets/js/ace.min.js"></script>
+
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <!-- inline scripts related to this page -->
+</body>
+</html>
+
+}
+else
+{
+<section style="display:none">
+    @RenderBody()
+</section>
+
+<script type="text/javascript">
+<!--
+    window.location = "/Giris"
+//-->
+</script>
+}
+
+

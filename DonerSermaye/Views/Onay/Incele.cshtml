@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Incele";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h2>Incele</h2>
+
+
+<table class="table table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>
+                Kesinti Türü
+            </th>
+            <th>
+                Kesinti Oranı
+            </th>
+            <th>
+                Tutar
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.kesintiler)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aciklama)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Oran)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tutar)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

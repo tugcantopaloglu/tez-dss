@@ -1,0 +1,152 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.FakulteGenelDurumViewModel>
+@using DonerSermaye.Models.Helper
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Genel Durum Raporları";
+    ViewData["Baslik"] = "Genel Durum Raporları";
+    Layout = LayoutHelper.GetPath(@Context.Session.GetString("yetki"));
+
+
+}
+
+<div id="IcerikAlani">
+    <table class="table table-bordered table-hover table-condensed" border="1" style="border-collapse:collapse">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Bolum
+                </th>
+                <th>
+                    Önceki Yıldan Devir
+                </th>
+                <th>
+                    Gelir
+                </th>
+                <th>
+                    Lab Gelir
+                </th>
+                <th>
+                    Malzeme Payı
+                </th>
+                <th>
+                    Dekanlık Payı
+                </th>
+                <th>
+                    Tahsil Edilmemiş Gelir
+                </th>
+                <th>
+                    Tahsil Edilmeyen Gelirlerin Malzeme Payı
+                </th>
+                <th>
+                    Tahsil Edilmeyen Gelirlerin Dekanlık Payı
+                </th>
+                <th>
+                    Toplam Gider
+                </th>
+                <th>
+                    Kalan
+                </th>
+                <th>
+                    Net Durum
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                decimal? t1 = 0;
+                decimal? t2 = 0;
+                decimal? t3 = 0;
+                decimal? t4 = 0;
+                decimal? t5 = 0;
+                decimal? t6 = 0;
+                decimal? t7 = 0;
+                decimal? t8 = 0;
+                decimal? t9 = 0;
+                decimal? t10 = 0;
+                decimal? t11 = 0;
+            }
+
+            @foreach (var item in Model)
+            {
+                t1 = t1 + item.DevirOncekiYil;
+                t2 = t2 + item.Gelir;
+                t3 = t3 + item.LabGelir;
+                t4 = t4 + item.MalzemePayi;
+                if (item.Id == 1)
+                {
+                    t5 = t5 + item.DekanlikPayi;
+                }
+                t6 = t6 + item.TahsilEdilmeyenGelir;
+                t7 = t7 + item.TahsilEdilmeyenGelirMalzemePayi;
+                t8 = t8 + item.TahsilEdilmeyenGelirDekanlikPayi;
+                t9 = t9 + item.Gider;
+                t10 = t10 + item.Kalan;
+                t11 = t11 + item.NetDurum;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bolum)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.DevirOncekiYil)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.Gelir)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.LabGelir)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.MalzemePayi)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.DekanlikPayi)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.TahsilEdilmeyenGelir)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.TahsilEdilmeyenGelirMalzemePayi)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.TahsilEdilmeyenGelirDekanlikPayi)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.Gider)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.Kalan)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.NetDurum)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><b>Toplam</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t1).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t2).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t3).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t4).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t5).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t6).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t7).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t8).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t9).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t10).ToString("0.00")</b></td>
+                <td style="text-align:right;"><b>@Convert.ToDecimal(t11).ToString("0.00")</b></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="text-right">
+    <a href="javascript:CallPrint('IcerikAlani','@ViewData["Baslik"]')" class="btn btn-warning">Yazdır</a>
+</div>

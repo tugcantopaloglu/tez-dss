@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.IstekTurleri>
+
+@{
+    ViewData["Title"] = "İstek Türleri";
+    ViewData["Baslik"] = "İstek Türleri";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-xs">İstek Türü Ekle</a>
+    
+</p>
+<table class="table table-bordered table-hover table-condensed table-striped">
+    <thead>
+        <tr>
+                <th>
+                   İstek Türü
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tur)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TurNo"  class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Düzenle</a> 
+                <a asp-action="Delete" asp-route-id="@item.TurNo"  class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

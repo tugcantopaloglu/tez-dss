@@ -1,0 +1,246 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Isler>
+@{
+    ViewData["Title"] = "Tamamlanan İşler (ARGE)";
+    ViewData["Baslik"] = "Tamamlanan İşler (ARGE)";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $(".incele").click(function () {
+            console.log(this);
+            var id = $(this).data('content');
+            $.ajax({
+                url: '/Onay/Incele/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById("gelen").innerHTML = "";
+                    $.each(data, function (i, item) {
+
+                        $("#gelen").append("Adı Soyad:" + item.ad + "<br/>Tutar:" + item.toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+
+                    });
+
+                }
+            });
+
+            $.ajax({
+                url: '/Onay/Incele2/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById("gelendagitim").innerHTML = "";
+                    var toplam = 0;
+                    $.each(data, function (i, item) {
+
+                        $("#gelendagitim").append("Kesinti:" + item.aciklama + "<br/>Oran:%" + item.oran + "<br/>Tutar:" + item.tutar + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+
+                        toplam = toplam + item.tutar;
+
+                    });
+
+                    $("#gelendagitim").append("Kesinti Toplamı:" + toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+                }
+            });
+        });
+
+    });
+
+
+</script>
+
+<div class="alert alert-success">Toplam Dağıtım Tutarı: @ViewData["toplam"] TL</div>
+
+<table class="table table-bordered table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>
+                İş Numarası
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Firma)
+            </th>
+            <th>
+                Ad Soyad
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tutar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bolum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Aciklama)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FaturaTarihi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FaturaNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Durum)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+            </td>
+            <td>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Personel Adı
+                            </th>
+                            <th>
+                                Tutar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ikiitem in item.IsAyrinti)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => ikiitem.Personel.Ad) @Html.DisplayFor(modelItem => ikiitem.Personel.Soyad)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => ikiitem.Tutar)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tutar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bolum.Bolum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tur.Tur)
+            </td>
+            <td>
+                @if(@item.Aciklama != null)
+                {
+                @Html.Raw(@item.Aciklama.Replace("\r", "<br />"))
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaturaTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaturaNo)
+            </td>
+            @if (item.Durum == 1)
+            {
+            <td class="btn-success">DAĞITIM YAPILDI</td>
+            }
+            else
+            {
+            <td class="btn-warning">DAĞITIM BEKLİYOR</td>
+            }
+
+            @{
+                var z = "faturalar/" + item.Id + ".pdf";
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o"></i> Düzenle</a> |
+                <input type="button" class="btn btn-info btn-xs incele" data-content="@item.Id" value="İncele" data-toggle="modal" data-target="#exampleModal2" /> |
+                <a asp-action="Iade" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-o-down"></i> İade et</a>|
+                <a download href="@z" class="btn btn-xs btn-primary"><i class="fa fa-file"></i>Fatura</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+    <i class="fa fa-check"></i> Dağıtım Yap
+</button>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title " id="exampleModalLabel2">İş Dağılımı ve Kesintiler</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-warning">
+                <span id="gelendagitim"></span>
+            </div>
+            <div class="modal-body bg-primary">
+                <span id="gelen"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="HesapEkle">
+
+                    <div class="form-group">
+                        Ay Adı:
+                        <input name="hesap" class="form-control" value="@ViewData["m"]" />
+                    </div><div class="form-group">
+                        Toplantı Tarihi:
+                        <input name="toplantitarihi" type="date" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        Toplantı Sayısı:
+                        <input name="toplantisayisi" type="number" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        Karar Sayısı:
+                        <input name="kararsayisi" type="number" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        Bu ay dahil edilsin mi?:
+                        <select name="aydahil" id="aydahil">
+                            <option selected="selected" value="0">Dahil Etme</option>
+                            <option value="1">Dahil Et</option>
+                        </select>
+                    </div>
+
+                    Ör: ARGE-EYLÜL-2018<br />
+                    <input type="submit" value="Ayı Kapat" class="btn btn-default btn-primary btn-block" />
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+

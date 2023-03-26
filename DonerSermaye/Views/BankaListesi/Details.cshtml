@@ -1,0 +1,37 @@
+﻿@model DonerSermaye.Models.Data.IsAyrinti
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>IsAyrinti</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutar)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutar)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Personel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Personel.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ıs)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ıs.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Geri Dön</a>
+</div>

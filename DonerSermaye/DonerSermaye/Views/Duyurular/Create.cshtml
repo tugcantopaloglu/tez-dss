@@ -1,0 +1,33 @@
+﻿@model DonerSermaye.Models.Data.Duyurular
+
+@{
+    ViewData["Title"] = "Duyuru Ekle";
+    ViewData["Baslik"] = "Duyuru Ekle";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Başlık</label>
+                <input asp-for="Baslik" class="form-control" />
+                <span asp-validation-for="Baslik" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duyuru" class="control-label"></label>
+                <textarea asp-for="Duyuru" class="form-control" rows="8" style="resize:none"></textarea>
+                <span asp-validation-for="Duyuru" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary" >Duyuru Listesi</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

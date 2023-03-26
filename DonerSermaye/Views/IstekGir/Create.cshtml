@@ -1,0 +1,74 @@
+﻿@model DonerSermaye.Models.Data.Istekler
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Istekler</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Konu" class="control-label"></label>
+                <input asp-for="Konu" class="form-control" />
+                <span asp-validation-for="Konu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ozet" class="control-label"></label>
+                <input asp-for="Ozet" class="form-control" />
+                <span asp-validation-for="Ozet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TurNo" class="control-label"></label>
+                <select asp-for="TurNo" class="form-control" asp-items="ViewBag.TurNo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OnayNo" class="control-label"></label>
+                <input asp-for="OnayNo" class="form-control" />
+                <span asp-validation-for="OnayNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TahakkukNo" class="control-label"></label>
+                <input asp-for="TahakkukNo" class="form-control" />
+                <span asp-validation-for="TahakkukNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BolumId" class="control-label"></label>
+                <select asp-for="BolumId" class="form-control" asp-items="ViewBag.BolumId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Onay" class="control-label"></label>
+                <input asp-for="Onay" class="form-control" />
+                <span asp-validation-for="Onay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YaklasikMaliyet" class="control-label"></label>
+                <input asp-for="YaklasikMaliyet" class="form-control" />
+                <span asp-validation-for="YaklasikMaliyet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaturaTarihi" class="control-label"></label>
+                <input asp-for="FaturaTarihi" class="form-control" />
+                <span asp-validation-for="FaturaTarihi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaturaNo" class="control-label"></label>
+                <input asp-for="FaturaNo" class="form-control" />
+                <span asp-validation-for="FaturaNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Geri Dön</a>
+</div>
+

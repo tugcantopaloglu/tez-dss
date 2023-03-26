@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Hesaplar>
+
+@{
+    ViewData["Title"] = "ARGE Geçmiş Aylar";
+    ViewData["Baslik"] = "ARGE Geçmiş Aylar";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#secilen").change("input", function () {
+          
+            var ID = $("#secilen").val();
+            
+            document.getElementById("gelen").innerHTML = " ";
+            $("#gelen").append(
+                "<table class='table table-bordered table-hover table-condensed'><thead><tr><th>Arge Numarası</th><th>Unvan</th><th>Ad</th><th>Soyad</th><th>Tutar</th></tr></thead></table><div><a class='btn btn-success' href='PrintDagitim?hesapId="+ID+"'>Yazdır</a></div>")
+           $.ajax({
+                url: '/Isgetir/argelistele/' + ID,
+                type: 'POST',
+                dataType: 'json',
+               success: function (data) {
+              
+                   $.each(data, function (i, item) {
+                       var argeno = '';
+                       if (item.argeNo != null) {
+                       var tz = item.argeNo.indexOf('DS-');
+                           console.log(tz);
+                       if (tz == null) {
+                           tz = 0;
+                       }
+                       
+                           argeno = item.argeNo.substring(tz);
+                           console.log(argeno);
+                       }
+
+                       $("#gelen table").append(
+                           "<tr><td>" + argeno +"</td><td>" + item.unvan + "</td>"
+                           + "<td>" + item.ad + "</td>"
+                           + "<td>" + item.soyad + "</td>"
+                           + "<td>" + item.tutar + " TL</td></tr>")
+                   });    
+               }
+            });
+        });
+    });
+
+    </script>
+<select class="form-control" id="secilen">
+    <option>Seçiniz...</option>
+    @foreach (var item in Model)
+    {
+
+
+    <option value= "@item.Id">
+        @item.Hesap
+    </option>
+    }
+</select>
+<hr/>
+<div id="gelen">
+
+</div>
+

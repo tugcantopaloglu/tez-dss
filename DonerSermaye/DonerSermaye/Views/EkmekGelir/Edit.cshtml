@@ -1,0 +1,62 @@
+﻿@model DonerSermaye.Models.Data.EkmekGelir
+@using Microsoft.AspNetCore.Http
+
+
+@{
+    ViewData["Title"] = "Ekmek Sipariş Ekleme";
+    ViewData["Baslik"] = "Ekmek Sipariş Ekleme";
+
+    Layout = "~/Views/Shared/Ekmek.cshtml";
+}
+<div class="row">
+    @if (ViewBag.hata != null)
+    {
+        <div class="col-md-12"><div class="alert alert-danger">@ViewBag.hata</div></div>
+    }
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label">Tarih</label>
+                <input asp-for="Gun" class="form-control" />
+                <span asp-validation-for="Gun" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Toplam %1</label>
+                <input asp-for="Top1" class="form-control" />
+                <span asp-validation-for="Top1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Kdv %1</label>
+                <input asp-for="Kdv1" class="form-control" />
+                <span asp-validation-for="Kdv1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Toplam %8</label>
+                <input asp-for="Top8" class="form-control" />
+                <span asp-validation-for="Top8" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Kdv %8</label>
+                <input asp-for="Kdv8" class="form-control" />
+                <span asp-validation-for="Kdv8" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Toplam %18</label>
+                <input asp-for="Top18" class="form-control" />
+                <span asp-validation-for="Top18" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Kdv %18</label>
+                <input asp-for="Kdv18" class="form-control" />
+                <span asp-validation-for="Kdv18" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Güncelle" class="btn btn-success" />  <a class="btn-primary btn" asp-action="Index"> <i class="ace-icon fa fa-external-link "></i>Ekmek Gelir Listesine Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+

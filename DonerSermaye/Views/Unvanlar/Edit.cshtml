@@ -1,0 +1,32 @@
+﻿@model DonerSermaye.Models.Data.Unvanlar
+
+@{
+    ViewData["Title"] = "Ünvan Düzenle";
+    ViewData["Baslik"] = "Ünvan Düzenle";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label  class="control-label">Ünvan</label>
+                <input asp-for="Unvan" class="form-control" />
+                <span asp-validation-for="Unvan" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Ünvan Listesi</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+
+</div>
+

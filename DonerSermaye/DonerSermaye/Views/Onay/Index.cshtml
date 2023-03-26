@@ -1,0 +1,157 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Isler>
+
+@{
+    ViewData["Title"] = "İş Onaylama";
+    ViewData["Baslik"] = "İş Onaylama";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $(".incele").click(function () {
+            console.log(this);
+            var id = $(this).data('content');
+            $.ajax({
+                url: '/Onay/Incele/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById("gelen").innerHTML = "";
+                    $.each(data, function (i, item) {
+
+                        $("#gelen").append("Adı Soyad:" + item.ad + "<br/>Tutar:" + item.toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+
+                    });
+
+                }
+            });
+
+            $.ajax({
+                url: '/Onay/Incele2/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById("gelendagitim").innerHTML = "";
+                    var toplam = 0;
+                    $.each(data, function (i, item) {
+
+                        $("#gelendagitim").append("Kesinti:" + item.aciklama + "<br/>Oran:%" + item.oran + "<br/>Tutar:" + item.tutar + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+
+                        toplam = toplam + item.tutar;
+
+                    });
+
+                    $("#gelendagitim").append("Kesinti Toplamı:" + toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
+                }
+            });
+        });
+
+    });
+
+
+</script>
+
+@{
+
+var d = "none";
+if(ViewBag.yazdir != null)
+{
+    d = "block";
+}
+
+}
+
+<div style="display:@d;" class="alert alert-success">İş onayı başarılı. <button class="btn btn-success" id="yzdr">Yazdırmak İçin Tıklayınız</button></div>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr class="text-center">
+            <th>
+                @Html.DisplayNameFor(model => model.Firma)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bolum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Aciklama)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tutar)
+            </th>
+
+
+            <th class="text-center">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody class="tb">
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bolum.Bolum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tur.Tur)
+            </td>
+            <td>
+               @Html.Raw(@item.Aciklama.Replace("\r", "<br />"))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tutar)
+            </td>
+
+            <td class="text-center">
+                <input type="button" class="btn btn-info btn-xs incele" data-content="@item.Id" value="İncele" data-toggle="modal" data-target="#exampleModal" />
+                <a asp-action="Reddet/@item.Id" class="btn btn-danger btn-xs reddet" value="@item.Id">İade Et</a>
+                <a asp-action="Onayla/@item.Id" class="btn btn-success btn-xs onayla" value="@item.Id">Onayla</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title " id="exampleModalLabel">İş Dağılımı ve Kesintiler</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-warning">
+                <span id="gelendagitim"></span>
+            </div>
+            <div class="modal-body bg-primary">
+                <span id="gelen"></span>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#yzdr").click(function () {
+
+            var d = @ViewBag.yazdir;
+            if (d != null) {
+
+                    var win = window.open('/print/index?IsId=' + d, '_blank');
+                    if (win) {
+                        //Browser has allowed it to be opened
+                        win.focus();
+                    } else {
+                        //Browser has blocked it
+                        alert('Yazdırma işlemi için lütfen tarayıcınızdan popup izni veriniz.');
+                    }
+            }
+            });
+        });
+    </script>
+}

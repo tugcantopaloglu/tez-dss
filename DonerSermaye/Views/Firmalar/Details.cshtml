@@ -1,0 +1,50 @@
+﻿@model DonerSermaye.Models.Data.Firmalar
+@using Microsoft.AspNetCore.Http
+@if (@Context.Session.GetString("yetki") == "2")
+    {
+
+        Layout = "~/Views/Shared/Index1.cshtml";
+    }
+    else if (@Context.Session.GetString("yetki") == "1")
+    {
+
+        Layout = "~/Views/Shared/bolumbaskan.cshtml";
+    }
+    else if (@Context.Session.GetString("yetki") == "3")
+    {
+
+        Layout = "~/Views/Shared/doner.cshtml";
+    }
+    @{
+        ViewData["Title"] = "Firma Detayı";
+        ViewData["Baslik"] = "Firma Detayı";
+
+    }
+
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                Firma / İş Adı:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FirmaAdi)
+            </dd>
+            <dt>
+                Vergi No:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.VergiNo)
+            </dd>
+            <dt>
+                TC Kimlik No:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TcKimlikNo)
+            </dd>
+        </dl>
+    </div>
+    <hr />
+    <div>
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model.Id"><i class="ace-icon fa fa-pencil-square-o "></i>Düzenle</a>
+        <a asp-action="Index" class="btn btn-primary"><i class="ace-icon fa fa-external-link "></i>Firma Listesine Dön</a>
+    </div>

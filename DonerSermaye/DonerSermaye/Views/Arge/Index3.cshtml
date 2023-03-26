@@ -1,0 +1,142 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.Arge>
+@{
+@using Microsoft.AspNetCore.Http
+if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+}
+@{
+    ViewData["Title"] = "Arge İşlemleri";
+    ViewData["Baslik"] = "Arge İşlemleri";
+}
+
+@{
+var sw = "";
+    @if(ViewData["Filtre"] == "filtre")
+{
+sw = "show";
+}
+else
+{
+<button class="btn btn-warning" style="margin-bottom:10px;" data-toggle="collapse" data-target="#filtre">Filtreleme</button>
+}
+}
+<div id="filtre" class="collapse @sw">
+    <form action="Index3" method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Firma</label>
+                    <select name="FirmaId" id="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"> <option value="">Bütün Firmalar</option></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Arge Numarası</label>
+                    <input type="text" id="ArgeNo" name="ArgeNo" value="@ViewBag.ArgeNo" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Listele" />
+                    @if(ViewData["Filtre"] == "filtre")
+                    {
+                    <a asp-action="Index2" class="btn btn-danger">Filtreyi Temizle</a>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<table class="table table-bordered table-hover table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>
+                Arge No
+            </th>
+            <th>
+                Açıklama
+            </th>
+            <th>
+                Firma
+            </th>
+            <th>
+                Proje Tutarı
+            </th>
+            <th>
+                Başlama Tarihi
+            </th>
+            <th>
+                Bitiş Tarihi
+            </th>
+            <th>
+                Personeller
+            </th>
+            <th class="text-center"> İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArgeNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aciklama)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjeTutari)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Baslama)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bitis)
+                </td>
+                <td>
+                    @foreach (var i in item.ArgePersonel)
+                    {
+                        <table><tr><td>@string.Format("{0} {1} {2}", i.Personel.Unvan.Unvan, i.Personel.Ad, i.Personel.Soyad)</td></tr></table>
+                    }
+                </td>
+                @{
+                    var z = "argeler/" + item.ArgeNo + ".pdf";
+                }
+                <td class="text-center">
+                    <a download href="@z" class="btn btn-xs btn-primary"><i class="fa fa-file"></i>Arge Formu</a>
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>
+
+
+@section Scripts {
+<script>
+        $(document).ready(function () {
+            $('#FirmaId').select2({ width: '100%' });
+            $('#BolumId').select2({ width: '100%' });
+        });
+</script>
+}

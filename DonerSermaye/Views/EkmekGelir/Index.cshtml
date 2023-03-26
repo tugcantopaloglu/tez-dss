@@ -1,0 +1,188 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.EkmekGelir>
+@using Microsoft.AspNetCore.Http
+
+
+
+@{
+    ViewData["Title"] = "Ekmek Gelir İşlemleri";
+    ViewData["Baslik"] = "Ekmek Gelir İşlemleri";
+    Layout = "~/Views/Shared/Ekmek.cshtml";
+}
+
+@if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<p>
+    <a asp-action="Create" class="btn-primary btn btn-xs">Yeni Gelir Ekle</a>
+</p>
+<form action="EkmekGelir" method="get">
+    @{
+        var tBas = "";
+        var tBit = "";
+        if (@ViewBag.BaslamaTarihi == null)
+        {
+            tBas = "";
+        }
+        else
+        {
+            tBas = @Convert.ToDateTime(@ViewBag.BaslamaTarihi).ToString("yyyy-MM-dd");
+        }
+
+        if (@ViewBag.BitisTarihi == null)
+        {
+            tBit = "";
+        }
+        else
+        {
+            tBit = @Convert.ToDateTime(@ViewBag.BitisTarihi).ToString("yyyy-MM-dd");
+        }
+
+    }
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="BaslamaTarihi" class="control-label">Gelir Tarihi Başlangıç</label>
+                <input id="BaslamaTarihi" name="BaslamaTarihi" class="form-control" value="@tBas" type="date" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="BitisTarihi" class="control-label">Gelir Tarihi Bitiş</label>
+                <input id="BitisTarihi" name="BitisTarihi" class="form-control" value="@tBit" type="date" />
+            </div>
+        </div>
+    </div>
+</form>
+<table class="table table-bordered table-hover table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>
+                Gün
+            </th>
+            <th>
+                Toplam %1
+            </th>
+            <th>
+                Kdv %1
+            </th>
+            <th>
+                Toplam %8
+            </th>
+            <th>
+                Kdv %8
+            </th>
+            <th>
+                Toplam %18
+            </th>
+            <th>
+                Kdv %18
+            </th>
+            <th>
+                Kdv'siz Toplam
+            </th>
+            <th>
+                Kdv Toplamı
+            </th>
+            <th>
+                Kdv'li Toplam
+            </th>
+            <th class="text-center"> İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Convert.ToDateTime(item.Gun).ToString("dd.MM.yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Top1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kdv1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Top8)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kdv8)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Top18)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kdv18)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KdvsizToplam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KdvToplam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KdvliToplam)
+                </td>
+                <td class="text-center">
+                    <a class="btn  btn-success btn-xs" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="ace-icon fa fa-pencil-square-o "></i>
+                        Düzenle
+                    </a>
+                    <a class="btn  btn-danger btn-xs" asp-action="Delete" asp-route-id="@item.Id">
+                        <i class="ace-icon fa fa-trash-o "></i>
+                        Sil
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <strong>TOPLAM</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Top1)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Kdv1)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Top8)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Kdv8)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Top18)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.Kdv18)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.KdvsizToplam)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.KdvToplam)</strong>
+            </td>
+            <td>
+                <strong>@Model.Sum(a => a.KdvliToplam)</strong>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tfoot>
+</table>

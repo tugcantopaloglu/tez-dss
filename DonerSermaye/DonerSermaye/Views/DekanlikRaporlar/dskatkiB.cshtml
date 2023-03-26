@@ -1,0 +1,61 @@
+﻿@model IEnumerable<DonerSermaye.Models.Data.MyModelDSK>
+
+@{
+    ViewData["Title"] = "İş Katkı Raporları";
+    ViewData["Baslik"] = "İş Katkı Raporları";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+<div id="IcerikAlani">
+    <table class="table table-bordered table-hover table-condensed" border="1" style="border-collapse:collapse">
+        <thead>
+            <tr>
+                <th>
+                    Öğretim Üyesi
+                </th>
+                <th style="text-align: right;">
+                    Kişi Katkısı
+                </th>
+                <th style="text-align: right;">
+                    Toplam Tutar
+                </th>
+                <th style="text-align: right;">
+                    Katkı Oranı
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var y = (100 * item.Kisi) / item.Tutar;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OgretimUyesi)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Kisi)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Tutar)
+                    </td>
+                    <td style="text-align: right;">
+                        @Convert.ToDouble(@y).ToString("0.00")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <a href="javascript:CallPrint('IcerikAlani','@ViewData["Baslik"]')" class="btn btn-warning">Yazdır</a>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#FirmaId').select2({ width: '100%' });
+            $('#BolumId').select2({ width: '100%' });
+        });
+    </script>
+}

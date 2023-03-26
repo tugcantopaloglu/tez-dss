@@ -1,0 +1,63 @@
+﻿@model DonerSermaye.Models.Data.IsTalepleri
+@using Microsoft.AspNetCore.Http
+@if (@Context.Session.GetString("yetki") == "2")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "1")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+else if (@Context.Session.GetString("yetki") == "3")
+{
+
+    Layout = "~/Views/Shared/Index1.cshtml";
+}
+@{
+    ViewData["Title"] = "İş Talebi Düzenle";
+    ViewData["Baslik"] = "İş Talebi Düzenle";
+
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="BolumId" type="hidden" class="form-control" asp-items="ViewBag.BolumId" />
+            <input asp-for="Id" type="hidden" class="form-control"/>
+            <div class="form-group">
+                <label class="control-label">İş Türü</label>
+                <select asp-for="TurId" class="form-control" asp-items="ViewBag.IsTuru"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Firma</label>
+                <select asp-for="FirmaId" class="form-control" asp-items="ViewBag.FirmaId"><option value="0">Firmasız Kayıt</option></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Aciklama" class="control-label"></label>
+                <input asp-for="Aciklama" class="form-control" />
+                <span asp-validation-for="Aciklama" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tutar" class="control-label"></label>
+                <input asp-for="Tutar" class="form-control" />
+                <span asp-validation-for="Tutar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Gönder" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">İş Talep Listesi</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#FirmaId').select2({ width: '100%' });
+        });
+    </script>
+}

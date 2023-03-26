@@ -1,0 +1,45 @@
+﻿@model DonerSermaye.Models.Data.Duyurular
+
+@{
+    ViewData["Title"] = "Duyuru Sil";
+    ViewData["Baslik"] = "Duyuru Silme İşlemleri";
+    Layout = "~/Views/Shared/doner.cshtml";
+}
+
+<h3 class="text-danger"> @Html.DisplayFor(model => model.Baslik) başlıklı duyuruyu silmek istiyor musunuz ?</h3>
+<div>
+  
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+           Başlık
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Baslik)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Duyuru)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Duyuru)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+        <dt>
+         Gönderen
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GonderenNavigation.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="DuyuruNo" />
+        <input type="submit" value="Sil" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-primary">Duyuru Listesi</a>
+    </form>
+</div>

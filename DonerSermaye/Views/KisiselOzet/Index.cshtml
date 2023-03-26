@@ -1,0 +1,154 @@
+﻿@model DonerSermaye.Models.Data.ViewModel
+@using Microsoft.AspNetCore.Http
+@{
+        ViewData["Title"] = "Kişisel Özet";
+        ViewData["Baslik"] = "Kişisel Özet";
+
+}
+<div class="row text-center">
+    <div class="infobox infobox-blue infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Toplam Dağıtım</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.toplam TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-pink infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Son Dağıtım</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.son TL</div>
+        </div>
+    </div>
+    <div class="infobox infobox-green infobox-medium infobox-dark">
+        <div class="infobox-icon">
+            <i class="ace-icon fa fa- fa-bar-chart-o"></i>
+        </div>
+        <div class="infobox-data">
+            <div class="infobox-content" style="font-size:9px"> Bekleyen Dağıtım</div>
+            <div class="infobox-content" style="font-size:11px">@ViewBag.dagitilmamis TL</div>
+        </div>
+    </div>
+</div>
+<div class="space-4"></div>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h4>Duyurular</h4>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        Duyuru Başlığı
+                    </th>
+                    <th>
+                        Duyuru
+                    </th>
+                    <th>
+                        Tarih
+                    </th>
+                    <th>
+                        Gönderen
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.duyurular)
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Baslik)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duyuru)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tarih)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GonderenNavigation.Ad)  @Html.DisplayFor(modelItem => item.GonderenNavigation.Soyad)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>İş Özetleri</h4>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Firma Adı
+                    </th>
+                    <th>
+                        Kişi Payı
+                    </th>
+                    <th>
+                        Toplam Tutar
+                    </th>
+                    <th>
+                        Tür
+                    </th>
+
+                    <th>
+                        Onay Durumu
+                    </th>
+                    <th>
+                        Fakülte Onayı
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.list)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirmaAdi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kisi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tutar)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tur)
+                    </td>
+                    @if (item.Bonay == 1)
+                    {
+                    <td class="btn-success">Onaylandı</td>
+                    }
+                    else if (item.Bonay == 0)
+                    {
+                    <td class="btn-warning">Onay Bekleniyor</td>
+                    }
+                    else if (item.Bonay == -1)
+                    {
+                    <td class="btn-danger">İade Edildi</td>
+                    }
+
+                    @if (item.Gonay == 1)
+                    {
+                    <td class="btn-info">Dağıtıldı</td>
+                    }
+                    else if (item.FaturaTipi == 1)
+                    {
+                    <td class="btn-success">Onaylandı</td>
+                    }
+                    else
+                    {
+                    <td class="btn-warning">Onay Bekliyor</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

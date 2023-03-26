@@ -1,0 +1,73 @@
+﻿@model DonerSermaye.Models.Data.Isler
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/bolumbaskan.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Isler</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutar)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutar)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Kdv)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Kdv)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BolumOnay)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BolumOnay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FaturaTarihi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FaturaTarihi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FaturaNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FaturaNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Durum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Durum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Bolum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Bolum.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Firma.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tur)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tur.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Geri Dön</a>
+</div>
