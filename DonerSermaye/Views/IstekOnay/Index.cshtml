@@ -7,50 +7,30 @@
     ViewData["Baslik"] = "Harcama Onayla";
     Layout = LayoutHelper.GetPath(@Context.Session.GetString("yetki"));
 }
-<script>
-    $(document).ready(function () {
-        $(".incele").click(function () {
-            console.log(this);
-            var id = $(this).data('content');
-            $.ajax({
-                url: '/Onay/Incele/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    document.getElementById("gelen").innerHTML = "";
-                    $.each(data, function (i, item) {
-
-                        $("#gelen").append("Adı Soyad:" + item.ad + "<br/>Tutar:" + item.toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-
-                    });
-
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">İncele</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @foreach (var istek in Model)
+                {
+                    <p>Bolum: @istek.Bolum.</p>
+                    <p>Tarih: @istek.Tarih</p>
+                    <p>Aciklama: @istek.Aciklama</p>
                 }
-            });
-
-            $.ajax({
-                url: '/Onay/Incele2/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    document.getElementById("gelendagitim").innerHTML = "";
-                    var toplam = 0;
-                    $.each(data, function (i, item) {
-
-                        $("#gelendagitim").append("Kesinti:" + item.aciklama + "<br/>Oran:%" + item.oran + "<br/>Tutar:" + item.tutar + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-
-                        toplam = toplam + item.tutar;
-
-                    });
-
-                    $("#gelendagitim").append("Kesinti Toplamı:" + toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-                }
-            });
-        });
-
-    });
-
-
-</script>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <!-- Modal footer içeriğini buraya ekleyin -->
+            </div>
+        </div>
+    </div>
+</div>
 
 <form action="IstekOnay" method="get">
     <div class="row">
