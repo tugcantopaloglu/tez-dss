@@ -136,19 +136,29 @@ namespace DonerSermaye.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IstekNo,Konu,Ozet,TurNo,OnayNo,Onay,Aciklama,YaklasikMaliyet")] Istekler istekler)
+        public async Task<IActionResult> Create([Bind("IstekNo,Konu,Ozet,TurNo,OnayNo,Onay,Aciklama,YaklasikMaliyet,IstekAd,IstekAdet")] Istekler istekler, string action)
         {
-            if (ModelState.IsValid)
-            {
-                istekler.BolumId =Convert.ToInt32(HttpContext.Session.GetString("bolumId"));
-                _context.Add(istekler);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                Istekler istekx = null;
+                if (action == "Ekle")
+                {
+                    istekler.BolumId = Convert.ToInt32(HttpContext.Session.GetString("bolumId"));
+                    istekx = istekler;
+                    ViewData["TurNo"] = new SelectList(_context.IstekTurleri, "TurNo", "TurNo", istekler.TurNo);
+                    return View(istekler);
+                }
+                else if (action == "Onaya Gönder")
+                {
+                   if (ModelState.IsValid)
+                   {
+                    _context.Add(istekx);
+                     await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Istekler");
+                   }
+                }   
+
             ViewData["TurNo"] = new SelectList(_context.IstekTurleri, "TurNo", "TurNo", istekler.TurNo);
             return View(istekler);
         }
-
         // GET: Istekler/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

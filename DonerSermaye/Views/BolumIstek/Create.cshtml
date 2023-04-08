@@ -1,4 +1,5 @@
 ﻿@model DonerSermaye.Models.Data.Istekler
+@using DonerSermaye.Models.Data
 @using DonerSermaye.Models.Helper
 @using Microsoft.AspNetCore.Http
 @{
@@ -11,25 +12,51 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                Açıklama
-                <input asp-for="Aciklama" class="form-control" />
-                <span asp-validation-for="Ozet" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                İstek Türü
+                Tür
                 <select asp-for="TurNo" class="form-control" asp-items="ViewBag.Tur"></select>
             </div>
             <div class="form-group">
-                Yaklaşık Maaliyet
+                <label asp-for="YaklasikMaliyet" class="control-label"></label>
                 <input asp-for="YaklasikMaliyet" class="form-control" />
                 <span asp-validation-for="YaklasikMaliyet" class="text-danger"></span>
             </div>
-
-
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-primary" />
+                İstek Adı
+                <textarea asp-for="IstekAd" class="form-control" rows="1" style="resize:none"></textarea>
+                <span asp-validation-for="IstekAd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                İstek Adedi
+                <textarea asp-for="IstekAdet" class="form-control" rows="1" style="resize:none"></textarea>
+                <span asp-validation-for="IstekAdet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                İstek Detayı
+                <textarea asp-for="Ozet" class="form-control" rows="8" style="resize:none"></textarea>
+                <span asp-validation-for="Ozet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-primary" name="action"/>
                 <a asp-action="Index" class="btn btn-info">İstek Listesi</a>
+            </div>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            İstek Adı
+                        </th>
+                        <th>
+                            İstek Adedi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Onaya Gönder" class="btn btn-success" name="action" />
+
             </div>
         </form>
     </div>

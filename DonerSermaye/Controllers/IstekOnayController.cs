@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DonerSermaye.Models.Data;
+using Microsoft.AspNetCore.Http;
+using DonerSermaye.Models.Service;
 
 namespace DonerSermaye.Controllers
 {
@@ -40,6 +42,29 @@ namespace DonerSermaye.Controllers
             ViewData["FirmaId"] = new SelectList(_context.Firmalar, "Id", "FirmaAdi", FirmaId);
 
             return View(await donersermayeContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Incele(int? BolumId)
+        {
+            decimal bekleyenisYaklasikMaaliyetHesaplama = 0;
+            IstekOnayInceleViewModel model = new IstekOnayInceleViewModel();
+
+            if (BolumId.HasValue)
+            {
+                GenelDurumService genelDurum = new GenelDurumService(_context);
+                var bolum = genelDurum.Bolum(BolumId.GetValueOrDefault(0));
+                model.Kalan = bolum.Kalan.GetValueOrDefault(0);
+                model.Bolum = bolum.Bolum;
+            }
+            var istekler = _context.Istekler.Where(i =>i.BolumId == BolumId && i.FaturaNo == null && i.Onay == 1).ToList();
+            foreach (var istek in istekler)
+            {
+                bekleyenisYaklasikMaaliyetHesaplama += istek.YaklasikMaliyet.GetValueOrDefault(0);
+            }
+
+            model.BekleyenYaklasikMaliyet = bekleyenisYaklasikMaaliyetHesaplama;
+
+            return View(model);
         }
 
         // GET: IstekOnay/Onayla/5

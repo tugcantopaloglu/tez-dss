@@ -6,56 +6,13 @@
     ViewData["Title"] = "Harcama Onayla";
     ViewData["Baslik"] = "Harcama Onayla";
     Layout = LayoutHelper.GetPath(@Context.Session.GetString("yetki"));
+    
 }
-<script>
-    $(document).ready(function () {
-        $(".incele").click(function () {
-            console.log(this);
-            var id = $(this).data('content');
-            $.ajax({
-                url: '/Onay/Incele/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    document.getElementById("gelen").innerHTML = "";
-                    $.each(data, function (i, item) {
-
-                        $("#gelen").append("Adı Soyad:" + item.ad + "<br/>Tutar:" + item.toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-
-                    });
-
-                }
-            });
-
-            $.ajax({
-                url: '/Onay/Incele2/' + id,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    document.getElementById("gelendagitim").innerHTML = "";
-                    var toplam = 0;
-                    $.each(data, function (i, item) {
-
-                        $("#gelendagitim").append("Kesinti:" + item.aciklama + "<br/>Oran:%" + item.oran + "<br/>Tutar:" + item.tutar + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-
-                        toplam = toplam + item.tutar;
-
-                    });
-
-                    $("#gelendagitim").append("Kesinti Toplamı:" + toplam + " TL<br/><hr style=\"margin-top: 0px;margin-bottom: 0px;\"/>");
-                }
-            });
-        });
-
-    });
-
-
-</script>
+<div class="modal fade" id="incele" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
 <form action="IstekOnay" method="get">
     <div class="row">
         <div class="col-md-4">
-
             <div class="form-group">
                 <label>Bolüm</label>
                 <select name="BolumId" id="BolumId" class="form-control" asp-items="ViewBag.BolumId"> <option value=""></option></select>
@@ -75,10 +32,7 @@
         </div>
     </div>
 </form>
-@if(ViewData["Filtre"] == "filtre")
-{
-<a asp-action="Index" class="btn btn-secondary">Filtreyi Temizle</a>
-}
+@if(ViewData["Filtre"] == "filtre") { <a asp-action="Index" class="btn btn-secondary">Filtreyi Temizle</a> }
 <table class="table table-bordered table-hover table-condensed">
     <thead>
         <tr>
@@ -108,46 +62,48 @@
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TurNoNavigation.Tur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ozet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YaklasikMaliyet)
-            </td>
-            <td>
-                <input type="button" class="btn btn-info btn-xs incele" data-content="@item.IstekNo" value="İncele" data-toggle="modal" data-target="#exampleModal2" /> |
-                <!-- Buraya Yaklasik Maliyet Sonucu ve Incele Butonu eklenecek -Osman -->
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bolum.Bolum)
-            </td>
-            <td>
-                @if (item.Onay == null)
-                {
-                    <span class="btn btn-default btn-xs">Onay Bekliyor</span>
-                }
-                else
-                {
-                    <span class="btn btn-success btn-xs">Onay Verildi</span>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TurNoNavigation.Tur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ozet)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YaklasikMaliyet)
+                </td>
+                <td>
+                    <input type="button" class="btn btn-info btn-xs incele" data-id="@item.BolumId" value="İncele" data-toggle="modal" data-target="#incele" />
+                    <!-- Buraya Yaklasik Maliyet Sonucu ve Incele Butonu eklenecek -Osman -->
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bolum.Bolum)
+                </td>
+                <td>
+                    @if (item.Onay == null)
+                    {
+                        <span class="btn btn-default btn-xs">Onay Bekliyor</span>
+                    }
+                    else
+                    {
+                        <span class="btn btn-success btn-xs">Onay Verildi</span>
 
-                }
-            </td>
-
-
-            <td>
-                <a asp-controller="IstekGir" asp-action="Edit" asp-route-id="@item.IstekNo" class="btn btn-warning btn-xs"><i class="fa fa-check"></i> Düzenle</a>
-                <a asp-action="Onayla" asp-route-id="@item.IstekNo" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Onayla</a>
-
-
-
-
-
-            </td>
-        </tr>
-}
+                    }
+                </td>
+                <td>
+                    <a asp-controller="IstekGir" asp-action="Edit" asp-route-id="@item.IstekNo" class="btn btn-warning btn-xs"><i class="fa fa-check"></i> Düzenle</a>
+                    <a asp-action="Onayla" asp-route-id="@item.IstekNo" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Onayla</a>
+                </td>
+            </tr>
+        }
     </tbody>
+    <script>
+        $("[type=button][data-id]").click(function() {
+            $("#incele").html("")
+            const id = $(this).attr("data-id")
+             $.get("/IstekOnay/Incele?BolumId=" + id, (response) => {
+                 $("#incele").html(response)
+             })
+        })
+    </script>
 </table>
