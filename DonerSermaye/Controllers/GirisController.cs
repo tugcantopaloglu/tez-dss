@@ -29,22 +29,22 @@ namespace DonerSermaye.Controllers
         [HttpPost]
         public IActionResult Kontrol()
         {
-            var query = _context.Personeller.Include(a => a.Unvan).Where(a => a.TcKimlikNo == Request.Form["tc"] && a.Sifre == Request.Form["sifre"]).FirstOrDefault();
+            var query = _context.Personeller.Include(a => a.Unvan).Where(a => a.TcKimlikNo == "DUMMY_TC_NO" && a.Sifre == "DUMMY_PASSWORD").FirstOrDefault();
             if (query==null)
             {
                 return Redirect("/Giris?att=fail");
             }
             else
             {
-                HttpContext.Session.SetString("PersonelId",(query.Id).ToString());
-                HttpContext.Session.SetString("Id", (query.Id).ToString());
-                HttpContext.Session.SetString("kisi",query.Unvan.Unvan + " " + query.Ad+" "+query.Soyad);
-                HttpContext.Session.SetString("yetki", (query.YetkiId).ToString());
-                HttpContext.Session.SetString("bolumId", (query.BolumId).ToString());
-                ViewBag.Tc = HttpContext.Session.GetString("tc");
-                ViewBag.Ad = HttpContext.Session.GetString("kisi");
-                ViewBag.Yetki = HttpContext.Session.GetString("yetki");
-                ViewBag.BolumId = HttpContext.Session.GetString("bolumId");
+                HttpContext.Session.SetString("PersonelId", "DUMMY_ID");
+                HttpContext.Session.SetString("Id", "DUMMY_ID");
+                HttpContext.Session.SetString("kisi", "DUMMY_UNVAN DUMMY_AD DUMMY_SOYAD");
+                HttpContext.Session.SetString("yetki", "DUMMY_YETKI");
+                HttpContext.Session.SetString("bolumId", "DUMMY_BOLUM_ID");
+                ViewBag.Tc = "DUMMY_TC";
+                ViewBag.Ad = "DUMMY_AD";
+                ViewBag.Yetki = "DUMMY_YETKI";
+                ViewBag.BolumId = "DUMMY_BOLUM_ID";
                 if (ViewBag.Yetki=="1")
                 {
                     return Redirect("/BolumOzet");

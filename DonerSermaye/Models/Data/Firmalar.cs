@@ -15,10 +15,10 @@ namespace DonerSermaye.Models.Data
         }
 
         public int Id { get; set; }
-        public string FirmaAdi { get; set; }
-        public string VergiNo { get; set; }
-        public string VergiDairesi { get; set; }
-        public string TcKimlikNo { get; set; }
+        public string FirmaAdi { get; set; } = "DUMMY_FIRMA_ADI";
+        public string VergiNo { get; set; } = "DUMMY_VERGI_NO";
+        public string VergiDairesi { get; set; } = "DUMMY_VERGI_DAIRESI";
+        public string TcKimlikNo { get; set; } = "DUMMY_TC_NO";
         public ICollection<Isler> Isler { get; set; }
         public ICollection<Istekler> Istekler { get; set; }
         public ICollection<EkmekSiparis> EkmekSiparis { get; set; }

@@ -19,12 +19,12 @@ namespace DonerSermaye.Models.Data
         public int? BolumId { get; set; }
         public int? UnvanId { get; set; }
         public int? YetkiId { get; set; }
-        public string TcKimlikNo { get; set; }
-        public string Ad { get; set; }
-        public string Soyad { get; set; }
-        public string Iban { get; set; }
-        public string EPosta { get; set; }
-        public string Sifre { get; set; }
+        public string TcKimlikNo { get; set; } = "DUMMY_TC_NO";
+        public string Ad { get; set; } = "DUMMY_AD";
+        public string Soyad { get; set; } = "DUMMY_SOYAD";
+        public string Iban { get; set; } = "DUMMY_IBAN";
+        public string EPosta { get; set; } = "DUMMY_EMAIL";
+        public string Sifre { get; set; } = "DUMMY_PASSWORD";
 
         public Bolumler Bolum { get; set; }
         public Unvanlar Unvan { get; set; }
